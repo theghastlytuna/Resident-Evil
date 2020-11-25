@@ -189,10 +189,16 @@
     <ClInclude Include="CreationTrigger.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ScaleTrigger.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="RotationTrigger.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ScaleTrigger.h">
+    <ClInclude Include="RevealTrigger.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ResidentEvil.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -366,6 +372,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ScaleTrigger.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RevealTrigger.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ResidentEvil.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

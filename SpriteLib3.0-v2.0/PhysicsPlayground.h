@@ -20,11 +20,17 @@ public:
 protected:
 	PhysicsPlaygroundListener listener;
 
-	int ball = 0;
-	int spinnerTrigger = 0;
-	int spinner = 0;
-	int scalerTrigger = 0;
-	int scaler0 = 0;
-	int scaler1 = 0;
-	int scaler2 = 0;
+	int puzzle1Object1 = 0;
+
+	int puzzle2Trigger1 = 0;
+	int puzzle2Object1 = 0;
+	int puzzle2Object2 = 0;
+	int puzzle2Object3 = 0;
+	int puzzle3Trigger1 = 0;
+	int puzzle3Trigger2 = 0;
+	int puzzle3Object1 = 0;
+
+	int winTrigger = 0;
+	int winSprite1 = 0;
+	int winSprite2 = 0;
 };

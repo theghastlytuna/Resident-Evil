@@ -173,6 +173,8 @@
     <ClInclude Include="Player.h" />
     <ClInclude Include="PostEffect.h" />
     <ClInclude Include="RenderingSystem.h" />
+    <ClInclude Include="ResidentEvil.h" />
+    <ClInclude Include="RevealTrigger.h" />
     <ClInclude Include="RotationTrigger.h" />
     <ClInclude Include="ScaleTrigger.h" />
     <ClInclude Include="Scene.h" />
@@ -233,6 +235,8 @@
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PostEffect.cpp" />
     <ClCompile Include="RenderingSystem.cpp" />
+    <ClCompile Include="ResidentEvil.cpp" />
+    <ClCompile Include="RevealTrigger.cpp" />
     <ClCompile Include="RotationTrigger.cpp" />
     <ClCompile Include="ScaleTrigger.cpp" />
     <ClCompile Include="Scene.cpp" />

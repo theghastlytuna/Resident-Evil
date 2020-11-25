@@ -2,13 +2,12 @@
 
 #include "Trigger.h"
 
-class RotationTrigger : public Trigger
+class RevealTrigger : public Trigger
 {
 public:
 	void OnEnter() override;
 	void OnExit() override;
 	void OnHold() override;
 	bool triggered = false;
-protected:
 };
 
