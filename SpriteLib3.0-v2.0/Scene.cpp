@@ -150,7 +150,7 @@ unsigned Scene::CreatePlatform(std::string fileName, int spriteX, int spriteY, f
 	tempBody = m_physicsWorld->CreateBody(&tempDef);
 
 	tempPhsBody = PhysicsBody(entity, tempBody, float(tempSpr.GetWidth() - shrinkX),
-		float(tempSpr.GetHeight() - shrinkY), vec2(0.f, 0.f), false, GROUND, PLAYER | ENEMY);
+		float(tempSpr.GetHeight() - shrinkY), vec2(0.f, 0.f), false, GROUND, PLAYER | ENEMY | OBJECTS);
 	tempPhsBody.SetColor(vec4(0.f, 1.f, 0.f, 0.3f));
 
 	tempPhsBody.SetRotationAngleDeg(angle);
@@ -182,7 +182,7 @@ unsigned Scene::CreateObjectBall(std::string fileName, int spriteX, int spriteY,
 	tempBody = m_physicsWorld->CreateBody(&tempDef);
 
 	//tempPhsBody = PhysicsBody(tempBody, float(tempSpr.GetWidth() - shrinkX), float(tempSpr.GetHeight() - shrinkY), vec2(0.f, 0.f), false);
-	tempPhsBody = PhysicsBody(entity, tempBody, float((tempSpr.GetWidth() - shrinkY) / 2.f), vec2(0.f, 0.f), false, OBJECTS, GROUND | ENVIRONMENT | PLAYER | TRIGGER, 0.3f);
+	tempPhsBody = PhysicsBody(entity, tempBody, float((tempSpr.GetWidth() - shrinkY) / 2.f), vec2(0.f, 0.f), false, OBJECTS, GROUND | ENVIRONMENT | PLAYER | TRIGGER | OBJECTS, 0.3f);
 
 	tempPhsBody.SetColor(vec4(1.f, 0.f, 1.f, 0.3f));
 
@@ -212,24 +212,29 @@ unsigned Scene::CreateObjectBox(std::string fileName, int spriteX, int spriteY, 
 
 	tempBody = m_physicsWorld->CreateBody(&tempDef);
 
-	tempPhsBody = PhysicsBody(entity, tempBody, float(tempSpr.GetWidth() - shrinkX), float(tempSpr.GetHeight() - shrinkY), vec2(0.f, 0.f), false, OBJECTS, GROUND | ENVIRONMENT | PLAYER | TRIGGER);
+	tempPhsBody = PhysicsBody(entity, tempBody, float(tempSpr.GetWidth() - shrinkX), float(tempSpr.GetHeight() - shrinkY), vec2(0.f, 0.f), false, OBJECTS, GROUND | ENVIRONMENT | PLAYER | TRIGGER | OBJECTS);
 
 	tempPhsBody.SetColor(vec4(1.f, 0.f, 1.f, 0.3f));
 
 	return entity;
 }
 
-unsigned Scene::CreateDestroyTrigger(int sizeX, int sizeY, float posX, float posY, unsigned int targetEntity0, unsigned int targetEntity1 = 0, unsigned int targetEntity2 = 0)
+unsigned Scene::CreateDestroyTrigger(int sizeX, int sizeY, float posX, float posY, unsigned int targetEntity0,
+		bool isHold, unsigned int targetEntity1, unsigned int targetEntity2)//default values
 {
 	//Creates entity
 	auto entity = ECS::CreateEntity();
 
 	//Add components
+	ECS::AttachComponent<Sprite>(entity);
 	ECS::AttachComponent<Transform>(entity);
 	ECS::AttachComponent<PhysicsBody>(entity);
 	ECS::AttachComponent<Trigger*>(entity);
 
 	//Sets up components
+	std::string fileName = "boxSprite.jpg";
+	ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, sizeX, sizeY);
+	ECS::GetComponent<Sprite>(entity).SetTransparency(1.f);
 	ECS::GetComponent<Transform>(entity).SetPosition(vec3(posX, posY, 80.f));
 	ECS::GetComponent<Trigger*>(entity) = new DestroyTrigger();
 	ECS::GetComponent<Trigger*>(entity)->SetTriggerEntity(entity);
@@ -258,7 +263,8 @@ unsigned Scene::CreateDestroyTrigger(int sizeX, int sizeY, float posX, float pos
 	return entity;
 }
 
-unsigned Scene::CreateRotationTrigger(int sizeX, int sizeY, float posX, float posY, unsigned int targetEntity0, unsigned int targetEntity1 = 0, unsigned int targetEntity2 = 0)
+unsigned Scene::CreateRotationTrigger(int sizeX, int sizeY, float posX, float posY, unsigned int targetEntity0,
+		bool isHold, unsigned int targetEntity1, unsigned int targetEntity2)//default values
 {
 	//Creates entity
 	auto entity = ECS::CreateEntity();
@@ -270,11 +276,60 @@ unsigned Scene::CreateRotationTrigger(int sizeX, int sizeY, float posX, float po
 	ECS::AttachComponent<Trigger*>(entity);
 
 	//Sets up components
-	std::string fileName = "boxSprite.jpg";
+	std::string fileName = "Red.png";
 	ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, sizeX, sizeY);
-	ECS::GetComponent<Sprite>(entity).SetTransparency(0.f);
+	ECS::GetComponent<Sprite>(entity).SetTransparency(1.f);
 	ECS::GetComponent<Transform>(entity).SetPosition(vec3(posX, posY, 80.f));
 	ECS::GetComponent<Trigger*>(entity) = new RotationTrigger();
+	ECS::GetComponent<Trigger*>(entity)->SetTriggerEntity(entity);
+	ECS::GetComponent<Trigger*>(entity)->AddTargetEntity(targetEntity0);
+	RotationTrigger* temp = (RotationTrigger*)ECS::GetComponent<Trigger*>(entity);
+	temp->hold = isHold;
+	if (targetEntity1 != 0)
+	{
+		ECS::GetComponent<Trigger*>(entity)->AddTargetEntity(targetEntity1);
+	}
+	if (targetEntity2 != 0)
+	{
+		ECS::GetComponent<Trigger*>(entity)->AddTargetEntity(targetEntity2);
+	}
+
+	auto& tempSpr = ECS::GetComponent<Sprite>(entity);
+	auto& tempPhsBody = ECS::GetComponent<PhysicsBody>(entity);
+
+	b2Body* tempBody;
+	b2BodyDef tempDef;
+	tempDef.type = b2_staticBody;
+	tempDef.position.Set(float32(posX), float32(posY));
+
+	tempBody = m_physicsWorld->CreateBody(&tempDef);
+
+	tempPhsBody = PhysicsBody(entity, tempBody, float(sizeX), float(sizeY), vec2(0.f, 0.f), true, TRIGGER, PLAYER | OBJECTS);
+	tempPhsBody.SetColor(vec4(1.f, 0.f, 0.f, 0.3f));
+
+	return entity;
+}
+
+unsigned Scene::CreateScaleTrigger(int sizeX, int sizeY, float posX, float posY, unsigned int targetEntity0, 
+		bool grow, bool isHold, unsigned int targetEntity1, unsigned int targetEntity2)//default values
+{
+	//Creates entity
+	auto entity = ECS::CreateEntity();
+
+	//Add components
+	ECS::AttachComponent<Sprite>(entity);
+	ECS::AttachComponent<Transform>(entity);
+	ECS::AttachComponent<PhysicsBody>(entity);
+	ECS::AttachComponent<Trigger*>(entity);
+
+	//Sets up components
+	std::string fileName = "Red.png";
+	ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, sizeX, sizeY);
+	ECS::GetComponent<Sprite>(entity).SetTransparency(1.f);
+	ECS::GetComponent<Transform>(entity).SetPosition(vec3(posX, posY, 80.f));
+	ECS::GetComponent<Trigger*>(entity) = new ScaleTrigger();
+	ScaleTrigger* temp = (ScaleTrigger*)ECS::GetComponent<Trigger*>(entity);
+	temp->grow = grow;
 	ECS::GetComponent<Trigger*>(entity)->SetTriggerEntity(entity);
 	ECS::GetComponent<Trigger*>(entity)->AddTargetEntity(targetEntity0);
 	if (targetEntity1 != 0)
@@ -302,7 +357,8 @@ unsigned Scene::CreateRotationTrigger(int sizeX, int sizeY, float posX, float po
 	return entity;
 }
 
-unsigned Scene::CreateScaleTrigger(int sizeX, int sizeY, float posX, float posY, unsigned int targetEntity0, unsigned int targetEntity1 = 0, unsigned int targetEntity2 = 0)
+unsigned Scene::CreateRevealTrigger(int sizeX, int sizeY, float posX, float posY, unsigned int targetEntity0,
+		 bool isHold, unsigned int targetEntity1, unsigned int targetEntity2)
 {
 	//Creates entity
 	auto entity = ECS::CreateEntity();
@@ -314,11 +370,11 @@ unsigned Scene::CreateScaleTrigger(int sizeX, int sizeY, float posX, float posY,
 	ECS::AttachComponent<Trigger*>(entity);
 
 	//Sets up components
-	std::string fileName = "boxSprite.jpg";
+	std::string fileName = "Red.png";
 	ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, sizeX, sizeY);
 	ECS::GetComponent<Sprite>(entity).SetTransparency(0.f);
 	ECS::GetComponent<Transform>(entity).SetPosition(vec3(posX, posY, 80.f));
-	ECS::GetComponent<Trigger*>(entity) = new ScaleTrigger();
+	ECS::GetComponent<Trigger*>(entity) = new RevealTrigger();
 	ECS::GetComponent<Trigger*>(entity)->SetTriggerEntity(entity);
 	ECS::GetComponent<Trigger*>(entity)->AddTargetEntity(targetEntity0);
 	if (targetEntity1 != 0)

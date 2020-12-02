@@ -14,7 +14,9 @@
 #include "RotationTrigger.h"
 #include "TranslateTrigger.h"
 #include "ScaleTrigger.h"
+#include "RevealTrigger.h"
 #include "HorizontalScroll.h"
+#include "Health.h"
 #include "CanJump.h"
 
 

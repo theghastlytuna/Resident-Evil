@@ -9,6 +9,7 @@ public:
 
 	void OnEnter() override;
 	void OnExit() override;
+	void OnHold() override;
 
 	b2Vec2 movement;
 protected:

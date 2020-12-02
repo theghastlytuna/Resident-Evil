@@ -31,9 +31,14 @@ public:
 	unsigned CreatePlatform(std::string fileName, int spriteX, int spriteY, float posX, float posY, float shrinkX, float shrinkY, float angle);
 	unsigned CreateObjectBall(std::string fileName, int spriteX, int spriteY, float posX, float posY, float shrinkX, float shrinkY);
 	unsigned CreateObjectBox(std::string fileName, int spriteX, int spriteY, float posX, float posY, float shrinkX, float shrinkY);
-	unsigned CreateDestroyTrigger(int sizeX, int sizeY, float posX, float posY, unsigned int targetEntity0, unsigned int targetEntity1, unsigned int targetEntity2);
-	unsigned CreateRotationTrigger(int sizeX, int sizeY, float posX, float posY, unsigned int targetEntity0, unsigned int targetEntity1, unsigned int targetEntity2);
-	unsigned CreateScaleTrigger(int sizeX, int sizeY, float posX, float posY, unsigned int targetEntity0, unsigned int targetEntity1, unsigned int targetEntity2);
+	unsigned CreateDestroyTrigger(int sizeX, int sizeY, float posX, float posY, unsigned int targetEntity0,
+			bool isHold = true, unsigned int targetEntity1 = 0, unsigned int targetEntity2 = 0);
+	unsigned CreateRotationTrigger(int sizeX, int sizeY, float posX, float posY, unsigned int targetEntity0, 
+			bool isHold = true, unsigned int targetEntity1 = 0, unsigned int targetEntity2 = 0);
+	unsigned CreateScaleTrigger(int sizeX, int sizeY, float posX, float posY, unsigned int targetEntity0, 
+			bool grow = true, bool isHold = true, unsigned int targetEntity1 = 0, unsigned int targetEntity2 = 0);
+	unsigned CreateRevealTrigger(int sizeX, int sizeY, float posX, float posY, unsigned int targetEntity0,
+		bool isHold = true, unsigned int targetEntity1 = 0, unsigned int targetEntity2 = 0);
 
 
 	//Gamepad Input

@@ -9,8 +9,8 @@ public:
 
 	void OnEnter() override;
 	void OnExit() override;
+	bool triggered = false;
 protected:
 
-	bool triggered = false;
 };
 

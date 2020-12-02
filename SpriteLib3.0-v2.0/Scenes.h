@@ -5,5 +5,6 @@
 #include "FirstCreation.h"
 #include "PhysicsPlayground.h"
 #include "AnimationSpritePlayground.h"
+#include "ResidentEvil.h"
 
 #endif // !__SCENES_H__

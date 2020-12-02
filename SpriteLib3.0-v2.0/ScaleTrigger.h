@@ -8,8 +8,10 @@ public:
 	void OnEnter() override;
 	void OnExit() override;
 	void OnHold() override;
+
+	bool grow = true;
+	bool triggered = false;
 protected:
 
-	bool triggered = false;
 };
 

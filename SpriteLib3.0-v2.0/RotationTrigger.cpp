@@ -7,6 +7,16 @@ void RotationTrigger::OnEnter()
 	Trigger::OnEnter();
 
 	triggered = true;
+
+	ECS::GetComponent<Sprite>(m_triggerEntity).SetTransparency(0.f);
+
+	if (!hold)
+	{
+		for (int i = 0; i < m_targetEntities.size(); i++)
+		{
+			ECS::GetComponent<PhysicsBody>(m_targetEntities[i]).SetRotationAngleDeg(ECS::GetComponent<PhysicsBody>(m_targetEntities[i]).GetRotationAngleDeg() + 90.f, true);
+		}
+	}
 }
 
 void RotationTrigger::OnExit()
@@ -14,6 +24,9 @@ void RotationTrigger::OnExit()
 	Trigger::OnExit();
 
 	triggered = false;
+
+	ECS::GetComponent<Sprite>(m_triggerEntity).SetTransparency(1.f);
+
 }
 
 void RotationTrigger::OnHold()
@@ -23,8 +36,12 @@ void RotationTrigger::OnHold()
 		return;
 	}
 
-	for (int i = 0; i < m_targetEntities.size(); i++)
+	if (hold)
 	{
-		ECS::GetComponent<PhysicsBody>(m_targetEntities[i]).SetRotationAngleDeg(ECS::GetComponent<PhysicsBody>(m_targetEntities[i]).GetRotationAngleDeg() + 1.f, true);
+		for (int i = 0; i < m_targetEntities.size(); i++)
+		{
+			ECS::GetComponent<PhysicsBody>(m_targetEntities[i]).SetRotationAngleDeg(ECS::GetComponent<PhysicsBody>(m_targetEntities[i]).GetRotationAngleDeg() + 1.f, true);
+		}
 	}
+
 }
