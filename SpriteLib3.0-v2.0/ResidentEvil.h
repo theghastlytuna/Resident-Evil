@@ -1,5 +1,6 @@
 #pragma once
 #include "Scene.h"
+#include "ResidentEvilContactListener.h"
 
 class ResidentEvil : public Scene
 {
@@ -16,5 +17,7 @@ public:
 	void KeyboardUp() override;
 
 protected:
+	ResidentEvilContactListener listener;
+
 	bool flipped = false;
 };

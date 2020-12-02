@@ -153,6 +153,7 @@
     <ClInclude Include="Game.h" />
     <ClInclude Include="GrainEffect.h" />
     <ClInclude Include="GreyscaleEffect.h" />
+    <ClInclude Include="Health.h" />
     <ClInclude Include="HorizontalScroll.h" />
     <ClInclude Include="include\imgui\imconfig.h" />
     <ClInclude Include="include\imgui\imgui.h" />
@@ -174,6 +175,7 @@
     <ClInclude Include="PostEffect.h" />
     <ClInclude Include="RenderingSystem.h" />
     <ClInclude Include="ResidentEvil.h" />
+    <ClInclude Include="ResidentEvilContactListener.h" />
     <ClInclude Include="RevealTrigger.h" />
     <ClInclude Include="RotationTrigger.h" />
     <ClInclude Include="ScaleTrigger.h" />
@@ -236,6 +238,7 @@
     <ClCompile Include="PostEffect.cpp" />
     <ClCompile Include="RenderingSystem.cpp" />
     <ClCompile Include="ResidentEvil.cpp" />
+    <ClCompile Include="ResidentEvilContactListener.cpp" />
     <ClCompile Include="RevealTrigger.cpp" />
     <ClCompile Include="RotationTrigger.cpp" />
     <ClCompile Include="ScaleTrigger.cpp" />
