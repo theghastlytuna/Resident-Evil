@@ -17,6 +17,7 @@ public:
 	void KeyboardUp() override;
 
 protected:
+	int m_player;
 	ResidentEvilContactListener listener;
 
 	bool flipped = false;
