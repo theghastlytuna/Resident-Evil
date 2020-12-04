@@ -137,18 +137,62 @@ void ResidentEvil::InitScene(float windowWidth, float windowHeight)
 void ResidentEvil::Update()
 {
 	auto& player = ECS::GetComponent<PhysicsBody>(MainEntities::MainPlayer());
+	auto& enemy = ECS::GetComponent<PhysicsBody>(MainEntities::MainEnemy());
 
 	Scene::AdjustScrollOffset();
 
 	player.GetBody()->SetLinearVelocity(b2Vec2(player.GetBody()->GetLinearVelocity().x * 0.888f, player.GetBody()->GetLinearVelocity().y * 0.888f));
 
+	if (player.GetPosition().x < enemy.GetPosition().x)
+	{
+		if (player.GetPosition().y == enemy.GetPosition().y)
+		{
+			enemy.SetRotationAngleDeg(180.f);
+			enemy.GetBody()->SetLinearVelocity(b2Vec2(-3.f, 0.f));
+		}
+		else
+		{
+			if (player.GetPosition().y > enemy.GetPosition().y)
+			{
+				enemy.SetRotationAngleDeg(90.f);
+				enemy.GetBody()->SetLinearVelocity(b2Vec2(-3.f, 3.f));
+			}
 
+			if (player.GetPosition().y < enemy.GetPosition().y)
+			{
+				enemy.SetRotationAngleDeg(270.f);
+				enemy.GetBody()->SetLinearVelocity(b2Vec2(-3.f, -3.f));
+			}
+		}
+	}
+
+	if (player.GetPosition().x > enemy.GetPosition().x)
+	{
+		if (player.GetPosition().y == enemy.GetPosition().y)
+		{
+			enemy.SetRotationAngleDeg(0.f);
+			enemy.GetBody()->SetLinearVelocity(b2Vec2(3.f, 0.f));
+		}
+		else
+		{
+			if (player.GetPosition().y > enemy.GetPosition().y)
+			{
+				enemy.SetRotationAngleDeg(90.f);
+				enemy.GetBody()->SetLinearVelocity(b2Vec2(3.f, 3.f));
+			}	
+
+			if (player.GetPosition().y < enemy.GetPosition().y)
+			{
+				enemy.SetRotationAngleDeg(270.f);
+				enemy.GetBody()->SetLinearVelocity(b2Vec2(3.f, -3.f));
+			}
+		}
+	}
 }
 
 void ResidentEvil::KeyboardHold()
 {
 	auto& player = ECS::GetComponent<PhysicsBody>(MainEntities::MainPlayer());
-	auto& enemy = ECS::GetComponent<PhysicsBody>(MainEntities::MainEnemy());
 
 	if (Input::GetKey(Key::W))
 	{
@@ -198,57 +242,6 @@ void ResidentEvil::KeyboardHold()
 		player.SetRotationAngleDeg(0.f);
 
 	}
-
-
-	if (player.GetPosition().x < enemy.GetPosition().x)
-	{
-		if (player.GetPosition().y == enemy.GetPosition().y)
-		{
-			enemy.SetRotationAngleDeg(180.f);
-			enemy.GetBody()->SetLinearVelocity(b2Vec2(-3.f, 0.f));
-		}
-
-		else
-		{
-			if (player.GetPosition().y > enemy.GetPosition().y)
-			{
-				enemy.SetRotationAngleDeg(90.f);
-				enemy.GetBody()->SetLinearVelocity(b2Vec2(-3.f, 3.f));
-			}
-
-			if (player.GetPosition().y < enemy.GetPosition().y)
-			{
-				enemy.SetRotationAngleDeg(270.f);
-				enemy.GetBody()->SetLinearVelocity(b2Vec2(-3.f, -3.f));
-			}
-		}
-	}
-
-	if (player.GetPosition().x > enemy.GetPosition().x)
-	{
-		if (player.GetPosition().y == enemy.GetPosition().y)
-		{
-			enemy.SetRotationAngleDeg(0.f);
-			enemy.GetBody()->SetLinearVelocity(b2Vec2(3.f, 0.f));
-		}
-
-		else
-		{
-			if (player.GetPosition().y > enemy.GetPosition().y)
-			{
-				enemy.SetRotationAngleDeg(90.f);
-				enemy.GetBody()->SetLinearVelocity(b2Vec2(3.f, 3.f));
-			}
-
-			if (player.GetPosition().y < enemy.GetPosition().y)
-			{
-				enemy.SetRotationAngleDeg(270.f);
-				enemy.GetBody()->SetLinearVelocity(b2Vec2(3.f, -3.f));
-			}
-		}
-	}
-
-
 }
 
 void ResidentEvil::KeyboardDown()
