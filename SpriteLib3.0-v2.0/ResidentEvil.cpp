@@ -106,6 +106,10 @@ void ResidentEvil::Update()
 
 	player.GetBody()->SetLinearVelocity(b2Vec2(player.GetBody()->GetLinearVelocity().x * 0.888f, player.GetBody()->GetLinearVelocity().y * 0.888f));
 
+	if (zombieSpawning)
+	{
+		Scene::ZombieSpawn();
+	}
 	ECS::GetComponent<HorizontalScroll>(MainEntities::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(MainEntities::MainPlayer()));
 	ECS::GetComponent<VerticalScroll>(MainEntities::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(MainEntities::MainPlayer()));
 }
@@ -146,10 +150,8 @@ void ResidentEvil::KeyboardHold()
 			flipped = true;
 			return;
 		}
-
 		player.GetBody()->ApplyForceToCenter(b2Vec2(0.f, -300000.f), true);
 		player.SetRotationAngleDeg(270.f);
-
 	}
 	if (Input::GetKey(Key::D))
 	{
@@ -160,10 +162,7 @@ void ResidentEvil::KeyboardHold()
 		}
 		player.GetBody()->ApplyForceToCenter(b2Vec2(300000.f, 0.f), true);
 		player.SetRotationAngleDeg(0.f);
-
 	}
-
-
 }
 
 void ResidentEvil::KeyboardDown()
@@ -175,10 +174,13 @@ void ResidentEvil::KeyboardDown()
 
 	if (Input::GetKeyDown(Key::J))
 	{
+		if (zombieSpawning == false)
+			zombieSpawning = true;
+		else
+			zombieSpawning = false;
 		Scene::CreateZombie("zombie_top_down.png", 50, 50, 0, 0, 30, 0);
 		//Scene::CreateObjectBox("boxSprite.jpg", 40, 40, 0, 0, 0, 0);
 		//ECS::GetComponent<Player>(MainEntities::MainPlayer()).ReassignComponents(ECS::GetComponent<PhysicsBody*>(MainEntities::MainPlayer()));
-		 
 	}
 }
 

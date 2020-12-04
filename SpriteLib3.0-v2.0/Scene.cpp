@@ -125,6 +125,15 @@ void Scene::CreateCameraEntity(bool mainCamera, float windowWidth, float windowH
 	}
 }
 
+void Scene::ZombieSpawn()
+{
+	if (Timer::time > 5)
+	{
+		Scene::CreateZombie("zombie_top_down.png", 50, 50, 0, 0, 30, 0);
+		Timer::Reset();
+	}
+}
+
 unsigned Scene::CreatePlatform(std::string fileName, int spriteX, int spriteY, float posX, float posY, float shrinkX, float shrinkY, float angle)
 {
 	//Creates entity

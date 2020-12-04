@@ -11,6 +11,8 @@ public:
 
 	void Update() override;
 
+
+
 	//Input overrides
 	void KeyboardHold() override;
 	void KeyboardDown() override;
@@ -19,6 +21,6 @@ public:
 protected:
 	int m_player = 0;
 	ResidentEvilContactListener listener;
-
+	bool zombieSpawning = false;
 	bool flipped = false;
 };
