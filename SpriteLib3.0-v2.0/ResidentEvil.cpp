@@ -213,6 +213,11 @@ void ResidentEvil::KeyboardDown()
 	auto& player = ECS::GetComponent<PhysicsBody>(MainEntities::MainPlayer());
 	//auto& bulletEntity = ECS::GetComponent<PhysicsBody>(bulletPhyBody);
 
+	std::vector<unsigned> bulletStorage(100);
+	unsigned* bulletAdd = bulletStorage.data();
+	unsigned bulletEntity;
+
+
 	if (Input::GetKeyDown(Key::T))
 	{
 		PhysicsBody::SetDraw(!PhysicsBody::GetDraw());
@@ -221,7 +226,12 @@ void ResidentEvil::KeyboardDown()
 	if (Input::GetKeyDown(Key::W) && Input::GetKey(Key::Space))
 	{
 		Scene::CreateBullet(player.GetBody()->GetPosition().x, player.GetBody()->GetPosition().y);
-		
+		bulletAdd = &bulletEntity;
+		for (int i = 0; i <= 10; i++) 
+		{
+			std::cout << bulletStorage[i] << std::endl;
+		}
+
 	}
 
 	if (Input::GetKeyDown(Key::J))

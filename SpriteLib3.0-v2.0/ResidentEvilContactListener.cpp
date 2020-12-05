@@ -1,7 +1,6 @@
 #include "ResidentEvilContactListener.h"
 #include "ECS.h"
 
-
 ResidentEvilContactListener::ResidentEvilContactListener()
 	: b2ContactListener()
 {
@@ -52,12 +51,13 @@ void ResidentEvilContactListener::BeginContact(b2Contact* contact)
 		if (filterA.categoryBits == ENEMY)
 		{
 			ECS::GetComponent<Health>((int)fixtureA->GetBody()->GetUserData()).health -= 10;
-			//delete fixtureB;
+			//DestroyTrigger::AddTargetEntity;
+
 		}
 		else if (filterB.categoryBits == ENEMY)
 		{
 			ECS::GetComponent<Health>((int)fixtureB->GetBody()->GetUserData()).health -= 10;
-			//delete fixtureA;
+			DestroyTrigger;
 		}
 	}
 }

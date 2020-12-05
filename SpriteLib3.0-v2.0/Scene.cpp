@@ -262,7 +262,7 @@ unsigned Scene::CreateZombie(std::string fileName, int spriteX, int spriteY, flo
 }
 
 //Create Bullet Entity
-unsigned Scene::CreateBullet(float posX, float posY)
+unsigned* Scene::CreateBullet(float posX, float posY)
 {
 	auto bulletEntity = ECS::CreateEntity();
 
@@ -299,7 +299,13 @@ unsigned Scene::CreateBullet(float posX, float posY)
 
 	bulletPhsBody.ApplyForce(vec3(9999.f, 0.f, 0.f));
 
-	return bulletEntity;
+	//std::vector<unsigned> bulletStorage(100);
+
+	//unsigned* bulletAdd = bulletStorage.data();
+	//bulletAdd = &bulletEntity;
+
+	//PhysicsBody::m_bodiesToDelete.push_back(bulletStorage[]);
+	return &bulletEntity;
 }
 
 unsigned Scene::CreateDestroyTrigger(int sizeX, int sizeY, float posX, float posY, unsigned int targetEntity0,
