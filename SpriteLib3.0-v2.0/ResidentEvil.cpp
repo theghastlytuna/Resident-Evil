@@ -19,6 +19,35 @@ void ResidentEvil::InitScene(float windowWidth, float windowHeight)
 
 	float aspectRatio = windowWidth / windowHeight;
 
+	//set spawner positions
+	{
+		spawnerPos spawner0;
+		spawnerPos spawner1;
+		spawnerPos spawner2;
+		spawnerPos spawner3;
+		spawnerPos spawner4;
+
+		spawner0.spawnerPosX = 0;
+		spawner0.spawnerPosY = 0;
+		spawners[0] = spawner0;
+
+		spawner1.spawnerPosX = 50;
+		spawner1.spawnerPosY = 0;
+		spawners[1] = spawner1;
+
+		spawner2.spawnerPosX = 0;
+		spawner2.spawnerPosY = -50;
+		spawners[2] = spawner2;
+
+		spawner3.spawnerPosX = -50;
+		spawner3.spawnerPosY = 0;
+		spawners[3] = spawner3;
+
+		spawner4.spawnerPosX = 0;
+		spawner4.spawnerPosY = 50;
+		spawners[4] = spawner4;
+
+	}
 
 	//Creates Camera Entity
 	{
@@ -108,7 +137,7 @@ void ResidentEvil::Update()
 
 	if (zombieSpawning)
 	{
-		Scene::ZombieSpawn();
+		Scene::ZombieSpawn(spawners);
 	}
 	ECS::GetComponent<HorizontalScroll>(MainEntities::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(MainEntities::MainPlayer()));
 	ECS::GetComponent<VerticalScroll>(MainEntities::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(MainEntities::MainPlayer()));
@@ -178,9 +207,6 @@ void ResidentEvil::KeyboardDown()
 			zombieSpawning = true;
 		else
 			zombieSpawning = false;
-		Scene::CreateZombie("zombie_top_down.png", 50, 50, 0, 0, 30, 0);
-		//Scene::CreateObjectBox("boxSprite.jpg", 40, 40, 0, 0, 0, 0);
-		//ECS::GetComponent<Player>(MainEntities::MainPlayer()).ReassignComponents(ECS::GetComponent<PhysicsBody*>(MainEntities::MainPlayer()));
 	}
 }
 

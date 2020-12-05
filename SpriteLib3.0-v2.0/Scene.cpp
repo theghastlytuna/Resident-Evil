@@ -1,5 +1,6 @@
 #include "Scene.h"
 #include "Utilities.h"
+#include <time.h>
 
 Scene::Scene(std::string name)
 {
@@ -125,11 +126,15 @@ void Scene::CreateCameraEntity(bool mainCamera, float windowWidth, float windowH
 	}
 }
 
-void Scene::ZombieSpawn()
+void Scene::ZombieSpawn(spawnerPos spawners[])
 {
+	srand(time(NULL));
+	int selectedPos = rand() % 5;
+	
 	if (Timer::time > 5)
 	{
-		Scene::CreateZombie("zombie_top_down.png", 50, 50, 0, 0, 30, 0);
+		std::cout << "Spawning at Spawner" << selectedPos << std::endl;
+		Scene::CreateZombie("zombie_top_down.png", 50, 50, spawners[selectedPos].spawnerPosX, spawners[selectedPos].spawnerPosY, 30, 0);
 		Timer::Reset();
 	}
 }

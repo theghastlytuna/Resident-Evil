@@ -12,6 +12,13 @@
 class Scene
 {
 public:
+
+	struct spawnerPos
+	{
+		int spawnerPosX;
+		int spawnerPosY;
+	};
+
 	Scene() { m_sceneReg = new entt::registry(); m_physicsWorld = new b2World(m_gravity); }
 	Scene(std::string name);
 	~Scene() { }
@@ -27,7 +34,7 @@ public:
 	void AdjustScrollOffset();
 	void CreateCameraEntity(bool mainCamera, float windowWidth, float windowHeight, float left, float right, float bottom, float top, 
 								float zNear, float zFar, float aspectRatio, bool vertScroll=false, bool horizScroll=false);
-	void ZombieSpawn();
+	void ZombieSpawn(spawnerPos spawners[]);
 
 	unsigned CreatePlatform(std::string fileName, int spriteX, int spriteY, float posX, float posY, float shrinkX, float shrinkY, float angle);
 	unsigned CreateObjectBall(std::string fileName, int spriteX, int spriteY, float posX, float posY, float shrinkX, float shrinkY);
@@ -84,6 +91,9 @@ public:
 
 	//Set window size (makes sure the camera aspect is proper)
 	void SetWindowSize(float windowWidth, float windowHeight);
+
+
+
 protected:
 	b2World* m_physicsWorld = nullptr;
 	b2Vec2 m_gravity = b2Vec2(float32(0.f), float32(0.f));

@@ -11,8 +11,6 @@ public:
 
 	void Update() override;
 
-
-
 	//Input overrides
 	void KeyboardHold() override;
 	void KeyboardDown() override;
@@ -23,4 +21,6 @@ protected:
 	ResidentEvilContactListener listener;
 	bool zombieSpawning = false;
 	bool flipped = false;
+
+	spawnerPos spawners[5];
 };
