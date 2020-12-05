@@ -125,6 +125,15 @@ void Scene::CreateCameraEntity(bool mainCamera, float windowWidth, float windowH
 	}
 }
 
+void Scene::ZombieSpawn()
+{
+	if (Timer::time > 5)
+	{
+		Scene::CreateZombie("zombie_top_down.png", 50, 50, 0, 0, 30, 0);
+		Timer::Reset();
+	}
+}
+
 unsigned Scene::CreatePlatform(std::string fileName, int spriteX, int spriteY, float posX, float posY, float shrinkX, float shrinkY, float angle)
 {
 	//Creates entity
@@ -213,6 +222,39 @@ unsigned Scene::CreateObjectBox(std::string fileName, int spriteX, int spriteY, 
 	tempBody = m_physicsWorld->CreateBody(&tempDef);
 
 	tempPhsBody = PhysicsBody(entity, tempBody, float(tempSpr.GetWidth() - shrinkX), float(tempSpr.GetHeight() - shrinkY), vec2(0.f, 0.f), false, OBJECTS, GROUND | ENVIRONMENT | PLAYER | TRIGGER | OBJECTS);
+
+	tempPhsBody.SetColor(vec4(1.f, 0.f, 1.f, 0.3f));
+
+	return entity;
+}
+
+unsigned Scene::CreateZombie(std::string fileName, int spriteX, int spriteY, float posX, float posY, float shrinkX, float shrinkY)
+{
+	auto entity = ECS::CreateEntity();
+	//Add components
+	ECS::AttachComponent<Sprite>(entity);
+	ECS::AttachComponent<Transform>(entity);
+	ECS::AttachComponent<PhysicsBody>(entity);
+	ECS::AttachComponent<Health>(entity);
+
+	//Sets up the components
+	ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, spriteX, spriteY);
+	ECS::GetComponent<Sprite>(entity).SetTransparency(1.f);
+	ECS::GetComponent<Transform>(entity).SetPosition(vec3(posX, posY, 3.f));
+	ECS::GetComponent<Health>(entity).health = 50;
+
+	auto& tempSpr = ECS::GetComponent<Sprite>(entity);
+	auto& tempPhsBody = ECS::GetComponent<PhysicsBody>(entity);
+
+	b2Body* tempBody;
+	b2BodyDef tempDef;
+	tempDef.type = b2_dynamicBody;
+	tempDef.position.Set(float32(posX), float32(posY));
+
+	tempBody = m_physicsWorld->CreateBody(&tempDef);
+
+	tempPhsBody = PhysicsBody(entity, tempBody, float(tempSpr.GetWidth() - shrinkX), vec2(0.f, 0.f), false,
+		ENEMY, PLAYER | OBJECTS | GROUND | ENVIRONMENT, 0.5f, 1.2f); //circle body
 
 	tempPhsBody.SetColor(vec4(1.f, 0.f, 1.f, 0.3f));
 

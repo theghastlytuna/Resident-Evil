@@ -214,6 +214,12 @@ void Player::AnimationUpdate()
 	SetActiveAnimation(activeAnimation + (int)m_facing);
 }
 
+void Player::ReassignComponents(PhysicsBody* body)
+{
+	//m_animController = controller;
+	m_physBody = body;
+}
+
 void Player::SetActiveAnimation(int anim)
 {
 	m_animController->SetActiveAnim(anim);

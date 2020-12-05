@@ -73,6 +73,7 @@ public:
 	void Update();
 	void MovementUpdate();
 	void AnimationUpdate();
+	void ReassignComponents(PhysicsBody* body);
 
 private:
 	void SetActiveAnimation(int anim);

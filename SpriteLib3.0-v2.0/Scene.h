@@ -27,10 +27,12 @@ public:
 	void AdjustScrollOffset();
 	void CreateCameraEntity(bool mainCamera, float windowWidth, float windowHeight, float left, float right, float bottom, float top, 
 								float zNear, float zFar, float aspectRatio, bool vertScroll=false, bool horizScroll=false);
+	void ZombieSpawn();
 
 	unsigned CreatePlatform(std::string fileName, int spriteX, int spriteY, float posX, float posY, float shrinkX, float shrinkY, float angle);
 	unsigned CreateObjectBall(std::string fileName, int spriteX, int spriteY, float posX, float posY, float shrinkX, float shrinkY);
 	unsigned CreateObjectBox(std::string fileName, int spriteX, int spriteY, float posX, float posY, float shrinkX, float shrinkY);
+	unsigned CreateZombie(std::string fileName, int spriteX, int spriteY, float posX, float posY, float shrinkX, float shrinkY);
 	unsigned CreateDestroyTrigger(int sizeX, int sizeY, float posX, float posY, unsigned int targetEntity0,
 			bool isHold = true, unsigned int targetEntity1 = 0, unsigned int targetEntity2 = 0);
 	unsigned CreateRotationTrigger(int sizeX, int sizeY, float posX, float posY, unsigned int targetEntity0, 
@@ -39,7 +41,6 @@ public:
 			bool grow = true, bool isHold = true, unsigned int targetEntity1 = 0, unsigned int targetEntity2 = 0);
 	unsigned CreateRevealTrigger(int sizeX, int sizeY, float posX, float posY, unsigned int targetEntity0,
 		bool isHold = true, unsigned int targetEntity1 = 0, unsigned int targetEntity2 = 0);
-
 
 	//Gamepad Input
 	//Because these are virtual you can override them in your inherited classes.

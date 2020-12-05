@@ -1,5 +1,6 @@
 #include "ResidentEvil.h"
 #include "Utilities.h"
+#include "Timer.h"
 
 ResidentEvil::ResidentEvil(std::string name)
 	: Scene(name)
@@ -52,13 +53,14 @@ void ResidentEvil::InitScene(float windowWidth, float windowHeight)
 		ECS::GetComponent<Transform>(entity).SetPosition(vec3(0.f, 0.f, 0.f));
 	}
 
-
 	//main player
 	{
 		auto entity = ECS::CreateEntity();
+		m_player = entity;
 		ECS::SetIsMainPlayer(entity, true);
 
 		//Add components
+		ECS::AttachComponent<Player>(entity);
 		ECS::AttachComponent<Sprite>(entity);
 		ECS::AttachComponent<Transform>(entity);
 		ECS::AttachComponent<PhysicsBody>(entity);
@@ -83,8 +85,8 @@ void ResidentEvil::InitScene(float windowWidth, float windowHeight)
 
 		tempBody = m_physicsWorld->CreateBody(&tempDef);
 
-		tempPhsBody = PhysicsBody(entity, tempBody, float(tempSpr.GetWidth() - shrinkX), vec2(0.f, 0.f), false, 
-				PLAYER, ENEMY | OBJECTS | PICKUP | TRIGGER | GROUND | ENVIRONMENT, 0.35f, 1.2f); //circle body
+		tempPhsBody = PhysicsBody(entity, tempBody, float(tempSpr.GetWidth() - shrinkX), vec2(0.f, 0.f), false,
+			PLAYER, ENEMY | OBJECTS | PICKUP | TRIGGER | GROUND | ENVIRONMENT, 0.35f, 1.2f); //circle body
 
 		tempBody->SetFixedRotation(true);
 		tempPhsBody.SetRotationAngleDeg(0.f);
@@ -92,45 +94,8 @@ void ResidentEvil::InitScene(float windowWidth, float windowHeight)
 
 	}
 
-	//enemy
-	{
-		auto entity = ECS::CreateEntity();
-
-		//Add components
-		ECS::AttachComponent<Sprite>(entity);
-		ECS::AttachComponent<Transform>(entity);
-		ECS::AttachComponent<PhysicsBody>(entity);
-		ECS::AttachComponent<Health>(entity);
-
-		//set components
-		std::string fileName = "zombie_top_down.png";
-		ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 50, 50);
-		ECS::GetComponent<Sprite>(entity).SetTransparency(1.f);
-		ECS::GetComponent<Transform>(entity).SetPosition(vec3(0.f, 30.f, 2.f));
-		ECS::GetComponent<Health>(entity).health = 50;
-
-		auto& tempSpr = ECS::GetComponent<Sprite>(entity);
-		auto& tempPhsBody = ECS::GetComponent<PhysicsBody>(entity);
-
-		float shrinkX = 30.f;
-
-		b2Body* tempBody;
-		b2BodyDef tempDef;
-		tempDef.type = b2_staticBody;
-		tempDef.position.Set(float32(60.f), float32(0.f));
-
-		tempBody = m_physicsWorld->CreateBody(&tempDef);
-
-		tempPhsBody = PhysicsBody(entity, tempBody, float(tempSpr.GetWidth() - shrinkX), vec2(0.f, 0.f), false, 
-				ENEMY, PLAYER | OBJECTS | GROUND | ENVIRONMENT, 0.5f, 1.2f); //circle body
-
-		tempPhsBody.SetRotationAngleDeg(0.f);
-		tempPhsBody.SetColor(vec4(1.f, 0.f, 1.f, 0.3f));
-
-	}
-
-		ECS::GetComponent<HorizontalScroll>(MainEntities::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(MainEntities::MainPlayer()));
-		ECS::GetComponent<VerticalScroll>(MainEntities::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(MainEntities::MainPlayer()));
+	ECS::GetComponent<HorizontalScroll>(MainEntities::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(MainEntities::MainPlayer()));
+	ECS::GetComponent<VerticalScroll>(MainEntities::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(MainEntities::MainPlayer()));
 }
 
 void ResidentEvil::Update()
@@ -141,7 +106,12 @@ void ResidentEvil::Update()
 
 	player.GetBody()->SetLinearVelocity(b2Vec2(player.GetBody()->GetLinearVelocity().x * 0.888f, player.GetBody()->GetLinearVelocity().y * 0.888f));
 
-
+	if (zombieSpawning)
+	{
+		Scene::ZombieSpawn();
+	}
+	ECS::GetComponent<HorizontalScroll>(MainEntities::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(MainEntities::MainPlayer()));
+	ECS::GetComponent<VerticalScroll>(MainEntities::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(MainEntities::MainPlayer()));
 }
 
 void ResidentEvil::KeyboardHold()
@@ -180,10 +150,8 @@ void ResidentEvil::KeyboardHold()
 			flipped = true;
 			return;
 		}
-
 		player.GetBody()->ApplyForceToCenter(b2Vec2(0.f, -300000.f), true);
 		player.SetRotationAngleDeg(270.f);
-
 	}
 	if (Input::GetKey(Key::D))
 	{
@@ -194,10 +162,7 @@ void ResidentEvil::KeyboardHold()
 		}
 		player.GetBody()->ApplyForceToCenter(b2Vec2(300000.f, 0.f), true);
 		player.SetRotationAngleDeg(0.f);
-
 	}
-
-
 }
 
 void ResidentEvil::KeyboardDown()
@@ -207,6 +172,16 @@ void ResidentEvil::KeyboardDown()
 		PhysicsBody::SetDraw(!PhysicsBody::GetDraw());
 	}
 
+	if (Input::GetKeyDown(Key::J))
+	{
+		if (zombieSpawning == false)
+			zombieSpawning = true;
+		else
+			zombieSpawning = false;
+		Scene::CreateZombie("zombie_top_down.png", 50, 50, 0, 0, 30, 0);
+		//Scene::CreateObjectBox("boxSprite.jpg", 40, 40, 0, 0, 0, 0);
+		//ECS::GetComponent<Player>(MainEntities::MainPlayer()).ReassignComponents(ECS::GetComponent<PhysicsBody*>(MainEntities::MainPlayer()));
+	}
 }
 
 void ResidentEvil::KeyboardUp()
