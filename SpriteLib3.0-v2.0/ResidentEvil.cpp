@@ -119,6 +119,18 @@ void ResidentEvil::Update()
 			std::cout << activeZombies[i] << std::endl;
 		}
 	}
+
+	//check for dead zombies
+	{
+		for (int i = 0; i < activeZombies.size(); i++)
+		{
+			if (ECS::GetComponent<Health>(activeZombies[i]).health <= 1)
+			{
+				PhysicsBody::m_bodiesToDelete.push_back(activeZombies[i]);
+			}
+		}
+	}
+
 	ECS::GetComponent<HorizontalScroll>(MainEntities::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(MainEntities::MainPlayer()));
 	ECS::GetComponent<VerticalScroll>(MainEntities::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(MainEntities::MainPlayer()));
 }
