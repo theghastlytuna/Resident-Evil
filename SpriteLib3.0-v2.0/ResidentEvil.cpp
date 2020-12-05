@@ -105,9 +105,19 @@ void ResidentEvil::Update()
 
 	player.GetBody()->SetLinearVelocity(b2Vec2(player.GetBody()->GetLinearVelocity().x * 0.888f, player.GetBody()->GetLinearVelocity().y * 0.888f));
 
+	//call zombie spawner
 	if (zombieSpawning)
 	{
-		Scene::ZombieSpawn(spawners);
+		spawnedZombie = Scene::ZombieSpawn(spawners);
+	}
+	//check for valid spawned zombies
+	if (spawnedZombie > -1)
+	{
+		activeZombies.push_back(spawnedZombie);
+		for (int i = 0; i < activeZombies.size(); i++)
+		{
+			std::cout << activeZombies[i] << std::endl;
+		}
 	}
 	ECS::GetComponent<HorizontalScroll>(MainEntities::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(MainEntities::MainPlayer()));
 	ECS::GetComponent<VerticalScroll>(MainEntities::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(MainEntities::MainPlayer()));

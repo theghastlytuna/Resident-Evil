@@ -126,7 +126,7 @@ void Scene::CreateCameraEntity(bool mainCamera, float windowWidth, float windowH
 	}
 }
 
-void Scene::ZombieSpawn(spawnerPos spawners[])
+int Scene::ZombieSpawn(spawnerPos spawners[])
 {
 	srand(time(NULL));
 	int selectedPos = rand() % 5;
@@ -134,9 +134,10 @@ void Scene::ZombieSpawn(spawnerPos spawners[])
 	if (Timer::time > 5)
 	{
 		std::cout << "Spawning at Spawner" << selectedPos << std::endl;
-		Scene::CreateZombie("zombie_top_down.png", 50, 50, spawners[selectedPos].spawnerPosX, spawners[selectedPos].spawnerPosY, 30, 0);
 		Timer::Reset();
+		return Scene::CreateZombie("zombie_top_down.png", 50, 50, spawners[selectedPos].spawnerPosX, spawners[selectedPos].spawnerPosY, 30, 0);
 	}
+	return -1;
 }
 
 unsigned Scene::CreatePlatform(std::string fileName, int spriteX, int spriteY, float posX, float posY, float shrinkX, float shrinkY, float angle)
