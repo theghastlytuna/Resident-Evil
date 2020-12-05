@@ -188,6 +188,15 @@ void ResidentEvil::KeyboardDown()
 		else
 			zombieSpawning = false;
 	}
+
+	if (Input::GetKeyDown(Key::K))//DELETE ALL ZOMBIES
+	{
+		for (int i = 0; i < activeZombies.size(); i++)
+		{
+			PhysicsBody::m_bodiesToDelete.push_back(activeZombies[i]);
+		}
+		activeZombies.clear();
+	}
 }
 
 void ResidentEvil::KeyboardUp()
