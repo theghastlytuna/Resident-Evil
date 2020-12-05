@@ -1,6 +1,7 @@
 #include "ResidentEvilContactListener.h"
 #include "ECS.h"
 
+
 ResidentEvilContactListener::ResidentEvilContactListener()
 	: b2ContactListener()
 {
@@ -37,11 +38,26 @@ void ResidentEvilContactListener::BeginContact(b2Contact* contact)
 		{
 			ECS::GetComponent<Health>((int)fixtureA->GetBody()->GetUserData()).health -= 10;
 
+
 		}
 		else if (filterB.categoryBits == PLAYER)
 		{
 			ECS::GetComponent<Health>((int)fixtureB->GetBody()->GetUserData()).health -= 10;
 
+		}
+	}
+
+	if ((filterA.categoryBits == FRIENDLY && filterB.categoryBits == ENEMY) || (filterB.categoryBits == FRIENDLY && filterA.categoryBits == ENEMY))
+	{
+		if (filterA.categoryBits == ENEMY)
+		{
+			ECS::GetComponent<Health>((int)fixtureA->GetBody()->GetUserData()).health -= 10;
+			//delete fixtureB;
+		}
+		else if (filterB.categoryBits == ENEMY)
+		{
+			ECS::GetComponent<Health>((int)fixtureB->GetBody()->GetUserData()).health -= 10;
+			//delete fixtureA;
 		}
 	}
 }

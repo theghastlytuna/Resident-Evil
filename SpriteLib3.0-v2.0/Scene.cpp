@@ -261,6 +261,47 @@ unsigned Scene::CreateZombie(std::string fileName, int spriteX, int spriteY, flo
 	return entity;
 }
 
+//Create Bullet Entity
+unsigned Scene::CreateBullet(float posX, float posY)
+{
+	auto bulletEntity = ECS::CreateEntity();
+
+	//Adding Components
+	ECS::AttachComponent<Sprite>(bulletEntity);
+	ECS::AttachComponent<Transform>(bulletEntity);
+	ECS::AttachComponent<PhysicsBody>(bulletEntity);
+	ECS::AttachComponent<Trigger*>(bulletEntity);
+
+
+	std::string fileName = "whiteBall.png";
+	ECS::GetComponent<Sprite>(bulletEntity).LoadSprite(fileName, 5, 5);
+	ECS::GetComponent<Sprite>(bulletEntity).SetTransparency(1.f);
+	ECS::GetComponent<Transform>(bulletEntity).SetPosition(vec3(posX, posY, 100.f));
+
+	auto& bulletSpr = ECS::GetComponent<Sprite>(bulletEntity);
+	auto& bulletPhsBody = ECS::GetComponent<PhysicsBody>(bulletEntity);
+
+	float shrinkX = 7.f;
+
+	b2Body* bulletBody;
+	b2BodyDef bulletDef;
+	bulletDef.type = b2_dynamicBody;
+	bulletDef.position.Set(posX, posY);
+
+	bulletBody = m_physicsWorld->CreateBody(&bulletDef);
+
+	bulletPhsBody = PhysicsBody(bulletEntity, bulletBody, float(bulletSpr.GetWidth() - shrinkX), vec2(0.f, 0.f), false, FRIENDLY, ENEMY | OBJECTS | ENVIRONMENT, 0.f, 0.f); //circle body
+
+	bulletBody->SetFixedRotation(false);
+	bulletPhsBody.SetRotationAngleDeg(0.f);
+	bulletPhsBody.SetColor(vec4(0.f, 1.f, 6.f, 0.3f));
+
+
+	bulletPhsBody.ApplyForce(vec3(9999.f, 0.f, 0.f));
+
+	return bulletEntity;
+}
+
 unsigned Scene::CreateDestroyTrigger(int sizeX, int sizeY, float posX, float posY, unsigned int targetEntity0,
 		bool isHold, unsigned int targetEntity1, unsigned int targetEntity2)//default values
 {
