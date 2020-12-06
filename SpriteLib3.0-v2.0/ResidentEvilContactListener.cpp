@@ -1,5 +1,8 @@
 #include "ResidentEvilContactListener.h"
 #include "ECS.h"
+#include "ResidentEvil.h"
+#include <vector>
+#include "Utilities.h"
 
 ResidentEvilContactListener::ResidentEvilContactListener()
 	: b2ContactListener()
@@ -14,6 +17,8 @@ void ResidentEvilContactListener::BeginContact(b2Contact* contact)
 
 	bool sensorA = fixtureA->IsSensor();
 	bool sensorB = fixtureB->IsSensor();
+
+	int* moveBullet;
 
 	//if neither or both are sensors, will be false
 	if ((sensorA ^ sensorB))
@@ -51,13 +56,13 @@ void ResidentEvilContactListener::BeginContact(b2Contact* contact)
 		if (filterA.categoryBits == ENEMY)
 		{
 			ECS::GetComponent<Health>((int)fixtureA->GetBody()->GetUserData()).health -= 10;
-			//DestroyTrigger::AddTargetEntity;
+			//ECS::GetComponent<PhysicsBody>((int)fixtureB->GetBody()
 
 		}
 		else if (filterB.categoryBits == ENEMY)
 		{
 			ECS::GetComponent<Health>((int)fixtureB->GetBody()->GetUserData()).health -= 10;
-			DestroyTrigger;
+			//DestroyTrigger;
 		}
 	}
 }

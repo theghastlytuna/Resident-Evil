@@ -172,6 +172,15 @@ void ResidentEvil::Update()
 		}
 	}
 
+	//Check for collided bullets
+	{
+
+		/*for (int i = 0; i < deleteBullets.size(); i++)
+		{
+			PhysicsBody::m_bodiesToDelete.push_back(deleteBullets[i]);
+		}*/
+	}
+
 	ECS::GetComponent<HorizontalScroll>(MainEntities::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(MainEntities::MainPlayer()));
 	ECS::GetComponent<VerticalScroll>(MainEntities::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(MainEntities::MainPlayer()));
 
@@ -234,9 +243,9 @@ void ResidentEvil::KeyboardDown()
 	auto& player = ECS::GetComponent<PhysicsBody>(MainEntities::MainPlayer());
 	//auto& bulletEntity = ECS::GetComponent<PhysicsBody>(bulletPhyBody);
 
-	std::vector<unsigned> bulletStorage(100);
-	unsigned* bulletAdd = bulletStorage.data();
-	unsigned bulletEntity;
+	
+
+
 
 
 	if (Input::GetKeyDown(Key::T))
@@ -246,12 +255,16 @@ void ResidentEvil::KeyboardDown()
 
 	if (Input::GetKeyDown(Key::W) && Input::GetKey(Key::Space))
 	{
-		Scene::CreateBullet(player.GetBody()->GetPosition().x, player.GetBody()->GetPosition().y);
-		bulletAdd = &bulletEntity;
-		for (int i = 0; i <= 10; i++) 
+		int bulletEntity;
+		int* bulletAdd = bulletStorage.data();
+		Scene::CreateBullet(player.GetBody()->GetPosition().x, player.GetBody()->GetPosition().y, bulletEntity);
+
+		//bulletAdd = &bulletEntity;
+
+		/*for (int i = 0; i <= bulletStorage.size(); i++) 
 		{
 			std::cout << bulletStorage[i] << std::endl;
-		}
+		}*/
 
 	}
 
@@ -270,6 +283,7 @@ void ResidentEvil::KeyboardDown()
 			PhysicsBody::m_bodiesToDelete.push_back(activeZombies[i]);
 		}
 		activeZombies.clear();
+
 	}
 }
 

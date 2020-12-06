@@ -17,6 +17,9 @@ public:
 	void KeyboardDown() override;
 	void KeyboardUp() override;
 
+	std::vector<int> bulletStorage;
+	std::vector<int> deleteBullets;
+
 protected:
 	int m_player = 0;
 	ResidentEvilContactListener listener;
@@ -31,4 +34,5 @@ protected:
 	spawnerPos spawners[5] = {spawner0, spawner1, spawner2, spawner3, spawner4};
 	int spawnedZombie = -1;
 	std::vector<int> activeZombies;
+
 };

@@ -268,9 +268,10 @@ unsigned Scene::CreateZombie(std::string fileName, int spriteX, int spriteY, flo
 }
 
 //Create Bullet Entity
-unsigned* Scene::CreateBullet(float posX, float posY)
+int Scene::CreateBullet(float posX, float posY, int& entity)
 {
 	auto bulletEntity = ECS::CreateEntity();
+	auto& player = ECS::GetComponent<PhysicsBody>(MainEntities::MainPlayer());
 
 	//Adding Components
 	ECS::AttachComponent<Sprite>(bulletEntity);
@@ -302,8 +303,12 @@ unsigned* Scene::CreateBullet(float posX, float posY)
 	bulletPhsBody.SetRotationAngleDeg(0.f);
 	bulletPhsBody.SetColor(vec4(0.f, 1.f, 6.f, 0.3f));
 
+	float bulletForce = 9999.f;
+	b2Vec2 forceDirection = b2Vec2(cos(player.GetRotationAngleDeg()), sin(player.GetRotationAngleDeg()));
+	//bulletPhsBody.ApplyForce(forceDirectionX * 9999.f, forceDirectionY, 0.f);
 
-	bulletPhsBody.ApplyForce(vec3(9999.f, 0.f, 0.f));
+
+	bulletBody->ApplyLinearImpulseToCenter(forceDirection, true);
 
 	//std::vector<unsigned> bulletStorage(100);
 
@@ -311,7 +316,7 @@ unsigned* Scene::CreateBullet(float posX, float posY)
 	//bulletAdd = &bulletEntity;
 
 	//PhysicsBody::m_bodiesToDelete.push_back(bulletStorage[]);
-	return &bulletEntity;
+	return entity;
 }
 
 unsigned Scene::CreateDestroyTrigger(int sizeX, int sizeY, float posX, float posY, unsigned int targetEntity0,
