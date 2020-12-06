@@ -20,7 +20,6 @@ void ResidentEvil::InitScene(float windowWidth, float windowHeight)
 
 	float aspectRatio = windowWidth / windowHeight;
 
-
 	//Creates Camera Entity
 	{
 		auto entity = ECS::CreateEntity();
@@ -147,10 +146,32 @@ void ResidentEvil::Update()
 
 	player.GetBody()->SetLinearVelocity(b2Vec2(player.GetBody()->GetLinearVelocity().x * 0.888f, player.GetBody()->GetLinearVelocity().y * 0.888f));
 
+	//call zombie spawner
 	if (zombieSpawning)
 	{
-		Scene::ZombieSpawn();
+		spawnedZombie = Scene::ZombieSpawn(spawners);
 	}
+	//check for valid spawned zombies
+	if (spawnedZombie > -1)
+	{
+		activeZombies.push_back(spawnedZombie);
+		for (int i = 0; i < activeZombies.size(); i++)
+		{
+			std::cout << activeZombies[i] << std::endl;
+		}
+	}
+
+	//check for dead zombies
+	{
+		for (int i = 0; i < activeZombies.size(); i++)
+		{
+			if (ECS::GetComponent<Health>(activeZombies[i]).health <= 1)
+			{
+				PhysicsBody::m_bodiesToDelete.push_back(activeZombies[i]);
+			}
+		}
+	}
+
 	ECS::GetComponent<HorizontalScroll>(MainEntities::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(MainEntities::MainPlayer()));
 	ECS::GetComponent<VerticalScroll>(MainEntities::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(MainEntities::MainPlayer()));
 
@@ -240,9 +261,15 @@ void ResidentEvil::KeyboardDown()
 			zombieSpawning = true;
 		else
 			zombieSpawning = false;
-		Scene::CreateZombie("zombie_top_down.png", 50, 50, 0, 0, 30, 0);
-		//Scene::CreateObjectBox("boxSprite.jpg", 40, 40, 0, 0, 0, 0);
-		//ECS::GetComponent<Player>(MainEntities::MainPlayer()).ReassignComponents(ECS::GetComponent<PhysicsBody*>(MainEntities::MainPlayer()));
+	}
+
+	if (Input::GetKeyDown(Key::K))//DELETE ALL ZOMBIES
+	{
+		for (int i = 0; i < activeZombies.size(); i++)
+		{
+			PhysicsBody::m_bodiesToDelete.push_back(activeZombies[i]);
+		}
+		activeZombies.clear();
 	}
 }
 
