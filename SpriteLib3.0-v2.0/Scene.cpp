@@ -268,25 +268,25 @@ unsigned Scene::CreateZombie(std::string fileName, int spriteX, int spriteY, flo
 }
 
 //Create Bullet Entity
-int Scene::CreateBullet(float posX, float posY, int& entity)
+unsigned Scene::CreateBullet(float posX, float posY)
 {
-	auto bulletEntity = ECS::CreateEntity();
+	auto entity = ECS::CreateEntity();
 	auto& player = ECS::GetComponent<PhysicsBody>(MainEntities::MainPlayer());
 
 	//Adding Components
-	ECS::AttachComponent<Sprite>(bulletEntity);
-	ECS::AttachComponent<Transform>(bulletEntity);
-	ECS::AttachComponent<PhysicsBody>(bulletEntity);
-	ECS::AttachComponent<Trigger*>(bulletEntity);
+	ECS::AttachComponent<Sprite>(entity);
+	ECS::AttachComponent<Transform>(entity);
+	ECS::AttachComponent<PhysicsBody>(entity);
+	ECS::AttachComponent<Trigger*>(entity);
 
 
 	std::string fileName = "whiteBall.png";
-	ECS::GetComponent<Sprite>(bulletEntity).LoadSprite(fileName, 5, 5);
-	ECS::GetComponent<Sprite>(bulletEntity).SetTransparency(1.f);
-	ECS::GetComponent<Transform>(bulletEntity).SetPosition(vec3(posX, posY, 100.f));
+	ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 5, 5);
+	ECS::GetComponent<Sprite>(entity).SetTransparency(1.f);
+	ECS::GetComponent<Transform>(entity).SetPosition(vec3(posX, posY, 100.f));
 
-	auto& bulletSpr = ECS::GetComponent<Sprite>(bulletEntity);
-	auto& bulletPhsBody = ECS::GetComponent<PhysicsBody>(bulletEntity);
+	auto& bulletSpr = ECS::GetComponent<Sprite>(entity);
+	auto& bulletPhsBody = ECS::GetComponent<PhysicsBody>(entity);
 
 	float shrinkX = 7.f;
 
@@ -297,23 +297,23 @@ int Scene::CreateBullet(float posX, float posY, int& entity)
 
 	bulletBody = m_physicsWorld->CreateBody(&bulletDef);
 
-	bulletPhsBody = PhysicsBody(bulletEntity, bulletBody, float(bulletSpr.GetWidth() - shrinkX), vec2(0.f, 0.f), false, FRIENDLY, ENEMY | OBJECTS | ENVIRONMENT, 0.f, 0.f); //circle body
+	bulletPhsBody = PhysicsBody(entity, bulletBody, float(bulletSpr.GetWidth() - shrinkX), vec2(0.f, 0.f), false, FRIENDLY, ENEMY | OBJECTS | ENVIRONMENT, 0.f, 0.f); //circle body
 
 	bulletBody->SetFixedRotation(false);
 	bulletPhsBody.SetRotationAngleDeg(0.f);
 	bulletPhsBody.SetColor(vec4(0.f, 1.f, 6.f, 0.3f));
 
 	float bulletForce = 9999.f;
-	b2Vec2 forceDirection = b2Vec2(cos(player.GetRotationAngleDeg()), sin(player.GetRotationAngleDeg()));
+	//b2Vec2 forceDirection = b2Vec2(cos(player.GetRotationAngleDeg()), sin(player.GetRotationAngleDeg()));
 	//bulletPhsBody.ApplyForce(forceDirectionX * 9999.f, forceDirectionY, 0.f);
 
 
-	bulletBody->ApplyLinearImpulseToCenter(forceDirection, true);
+	//bulletBody->ApplyLinearImpulseToCenter(forceDirection, true);
 
 	//std::vector<unsigned> bulletStorage(100);
 
 	//unsigned* bulletAdd = bulletStorage.data();
-	//bulletAdd = &bulletEntity;
+	//bulletAdd = &entity;
 
 	//PhysicsBody::m_bodiesToDelete.push_back(bulletStorage[]);
 	return entity;

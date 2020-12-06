@@ -255,16 +255,13 @@ void ResidentEvil::KeyboardDown()
 
 	if (Input::GetKeyDown(Key::W) && Input::GetKey(Key::Space))
 	{
-		int bulletEntity;
-		int* bulletAdd = bulletStorage.data();
-		Scene::CreateBullet(player.GetBody()->GetPosition().x, player.GetBody()->GetPosition().y, bulletEntity);
+		bulletEntity = Scene::CreateBullet(player.GetBody()->GetPosition().x, player.GetBody()->GetPosition().y);
+		bulletStorage.push_back(bulletEntity);
 
-		//bulletAdd = &bulletEntity;
-
-		/*for (int i = 0; i <= bulletStorage.size(); i++) 
+		for (int i = 0; i < bulletStorage.size(); i++) 
 		{
 			std::cout << bulletStorage[i] << std::endl;
-		}*/
+		}
 
 	}
 

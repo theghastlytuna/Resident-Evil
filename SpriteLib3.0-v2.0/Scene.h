@@ -40,7 +40,7 @@ public:
 	unsigned CreateObjectBall(std::string fileName, int spriteX, int spriteY, float posX, float posY, float shrinkX, float shrinkY);
 	unsigned CreateObjectBox(std::string fileName, int spriteX, int spriteY, float posX, float posY, float shrinkX, float shrinkY);
 	unsigned CreateZombie(std::string fileName, int spriteX, int spriteY, float posX, float posY, float shrinkX, float shrinkY);
-	int CreateBullet(float posX, float posY, int& entity);
+	unsigned CreateBullet(float posX, float posY);
 	unsigned CreateDestroyTrigger(int sizeX, int sizeY, float posX, float posY, unsigned int targetEntity0,
 			bool isHold = true, unsigned int targetEntity1 = 0, unsigned int targetEntity2 = 0);
 	unsigned CreateRotationTrigger(int sizeX, int sizeY, float posX, float posY, unsigned int targetEntity0, 

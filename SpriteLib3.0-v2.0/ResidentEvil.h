@@ -35,4 +35,6 @@ protected:
 	int spawnedZombie = -1;
 	std::vector<int> activeZombies;
 
+	int bulletEntity = -1;
+
 };
