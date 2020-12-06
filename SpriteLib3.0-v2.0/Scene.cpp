@@ -1,6 +1,8 @@
 #include "Scene.h"
 #include "Utilities.h"
 #include <time.h>
+#include "Matrix.h"
+#include <Box2D/Box2D.h>
 
 Scene::Scene(std::string name)
 {
@@ -271,13 +273,13 @@ unsigned Scene::CreateZombie(std::string fileName, int spriteX, int spriteY, flo
 unsigned Scene::CreateBullet(float posX, float posY)
 {
 	auto entity = ECS::CreateEntity();
-	auto& player = ECS::GetComponent<PhysicsBody>(MainEntities::MainPlayer());
+	auto player = ECS::GetComponent<PhysicsBody>(MainEntities::MainPlayer());
 
 	//Adding Components
 	ECS::AttachComponent<Sprite>(entity);
 	ECS::AttachComponent<Transform>(entity);
 	ECS::AttachComponent<PhysicsBody>(entity);
-	ECS::AttachComponent<Trigger*>(entity);
+	//ECS::AttachComponent<Trigger*>(entity);
 
 
 	std::string fileName = "whiteBall.png";
@@ -288,12 +290,19 @@ unsigned Scene::CreateBullet(float posX, float posY)
 	auto& bulletSpr = ECS::GetComponent<Sprite>(entity);
 	auto& bulletPhsBody = ECS::GetComponent<PhysicsBody>(entity);
 
-	float shrinkX = 7.f;
+	float shrinkX = 0.f;
 
 	b2Body* bulletBody;
 	b2BodyDef bulletDef;
 	bulletDef.type = b2_dynamicBody;
-	bulletDef.position.Set(posX, posY);
+	float bulletForce = 9999.f;
+	float playerAngle = player.GetRotationAngleDeg() * (PI / 180);
+
+	vec2 initialDirection = vec2(13.f, 0.f);
+	mat2 rotationMatrix = mat2(vec2(cos(playerAngle), -sin(playerAngle)), vec2(sin(playerAngle), cos(playerAngle)));
+	vec2 rotatedDirection = rotationMatrix.operator*(initialDirection);
+	bulletDef.position.Set(posX + rotatedDirection.x, posY + rotatedDirection.y);
+
 
 	bulletBody = m_physicsWorld->CreateBody(&bulletDef);
 
@@ -303,12 +312,13 @@ unsigned Scene::CreateBullet(float posX, float posY)
 	bulletPhsBody.SetRotationAngleDeg(0.f);
 	bulletPhsBody.SetColor(vec4(0.f, 1.f, 6.f, 0.3f));
 
-	float bulletForce = 9999.f;
-	//b2Vec2 forceDirection = b2Vec2(cos(player.GetRotationAngleDeg()), sin(player.GetRotationAngleDeg()));
-	//bulletPhsBody.ApplyForce(forceDirectionX * 9999.f, forceDirectionY, 0.f);
+
+	//bulletPhsBody.ApplyForce(vec3(9999.f, 0.f, 0.f));
+
+	//bulletPhsBody->velocity = 
 
 
-	//bulletBody->ApplyLinearImpulseToCenter(forceDirection, true);
+	bulletBody->ApplyLinearImpulseToCenter(b2Vec2(bulletForce * rotatedDirection.x, bulletForce* rotatedDirection.y), true);
 
 	//std::vector<unsigned> bulletStorage(100);
 

@@ -175,10 +175,10 @@ void ResidentEvil::Update()
 	//Check for collided bullets
 	{
 
-		/*for (int i = 0; i < deleteBullets.size(); i++)
+		for (int i = 0; i < deleteBullets.size(); i++)
 		{
 			PhysicsBody::m_bodiesToDelete.push_back(deleteBullets[i]);
-		}*/
+		}
 	}
 
 	ECS::GetComponent<HorizontalScroll>(MainEntities::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(MainEntities::MainPlayer()));
@@ -255,6 +255,7 @@ void ResidentEvil::KeyboardDown()
 
 	if (Input::GetKeyDown(Key::W) && Input::GetKey(Key::Space))
 	{
+
 		bulletEntity = Scene::CreateBullet(player.GetBody()->GetPosition().x, player.GetBody()->GetPosition().y);
 		bulletStorage.push_back(bulletEntity);
 

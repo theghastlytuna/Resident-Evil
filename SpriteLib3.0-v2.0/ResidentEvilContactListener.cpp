@@ -56,7 +56,7 @@ void ResidentEvilContactListener::BeginContact(b2Contact* contact)
 		if (filterA.categoryBits == ENEMY)
 		{
 			ECS::GetComponent<Health>((int)fixtureA->GetBody()->GetUserData()).health -= 10;
-			//ECS::GetComponent<PhysicsBody>((int)fixtureB->GetBody()
+			
 
 		}
 		else if (filterB.categoryBits == ENEMY)
