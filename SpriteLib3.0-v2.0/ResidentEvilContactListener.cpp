@@ -72,6 +72,7 @@ void ResidentEvilContactListener::BeginContact(b2Contact* contact)
 			ECS::GetComponent<BulletCollide>((int)fixtureA->GetBody()->GetUserData()).collided = true;
 		}
 	}
+
 	//Player and ammo pickup contact
 	if ((filterA.categoryBits == PICKUP && filterB.categoryBits == PLAYER) || (filterB.categoryBits == PICKUP && filterA.categoryBits == PLAYER))
 	{

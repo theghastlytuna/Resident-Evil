@@ -215,11 +215,10 @@ void ResidentEvil::Update()
 		}
 	}
 	
-	Follow();
+	Follow();//make zombies move
 
 	//Check for collided bullets
 	{
-
 		for (int i = 0; i < bulletStorage.size(); i++)
 		{
 			if (ECS::GetComponent<BulletCollide>(bulletStorage[i]).collided == true)
@@ -228,7 +227,6 @@ void ResidentEvil::Update()
 				//int* r =(int*)bulletStorage[i];
 				bulletStorage.erase(bulletStorage.begin() + i);
 			}
-
 		}
 	}
 
@@ -248,19 +246,19 @@ void ResidentEvil::Update()
 	{
 		ECS::GetComponent<Transform>(MainEntities::MainUI()).SetPosition(vec3(player.GetPosition().x - 180, player.GetPosition().y + 130, 40.f));
 
-		if (ECS::GetComponent<Health>(MainEntities::MainPlayer()).health <= 10)
+		if (ECS::GetComponent<Health>(MainEntities::MainPlayer()).health < 20)
 		{
 			ECS::GetComponent<Sprite>(MainEntities::MainUI()).LoadSprite(deadBar, 90, 30, false);
 		}
-		else if (ECS::GetComponent<Health>(MainEntities::MainPlayer()).health <= 20)
+		else if (ECS::GetComponent<Health>(MainEntities::MainPlayer()).health < 30)
 		{
 			ECS::GetComponent<Sprite>(MainEntities::MainUI()).LoadSprite(redBar, 90, 30, false);
 		}
-		else if (ECS::GetComponent<Health>(MainEntities::MainPlayer()).health <= 30)
+		else if (ECS::GetComponent<Health>(MainEntities::MainPlayer()).health < 40)
 		{
 			ECS::GetComponent<Sprite>(MainEntities::MainUI()).LoadSprite(orangeBar, 90, 30, false);
 		}
-		else if (ECS::GetComponent<Health>(MainEntities::MainPlayer()).health <= 40)
+		else if (ECS::GetComponent<Health>(MainEntities::MainPlayer()).health < 50)
 		{
 			ECS::GetComponent<Sprite>(MainEntities::MainUI()).LoadSprite(yellowBar, 90, 30, false);
 		}
@@ -274,23 +272,23 @@ void ResidentEvil::Update()
 	{
 		ECS::GetComponent<Transform>(MainEntities::MainAmmoUI()).SetPosition(vec3(player.GetPosition().x - 180, player.GetPosition().y + 80, 40.f));
 
-		if (ECS::GetComponent<Ammo>(MainEntities::MainPlayer()).ammo == 0)
+		if (ECS::GetComponent<Ammo>(MainEntities::MainPlayer()).ammo < 10)
 		{
 			ECS::GetComponent<Sprite>(MainEntities::MainAmmoUI()).LoadSprite(deadBar, 90, 30, false);
 		}
-		else if (ECS::GetComponent<Ammo>(MainEntities::MainPlayer()).ammo <= 10)
+		else if (ECS::GetComponent<Ammo>(MainEntities::MainPlayer()).ammo < 20)
 		{
 			ECS::GetComponent<Sprite>(MainEntities::MainAmmoUI()).LoadSprite(deadBar, 90, 30, false);
 		}
-		else if (ECS::GetComponent<Ammo>(MainEntities::MainPlayer()).ammo <= 20)
+		else if (ECS::GetComponent<Ammo>(MainEntities::MainPlayer()).ammo < 30)
 		{
 			ECS::GetComponent<Sprite>(MainEntities::MainAmmoUI()).LoadSprite(redBar, 90, 30, false);
 		}
-		else if (ECS::GetComponent<Ammo>(MainEntities::MainPlayer()).ammo <= 30)
+		else if (ECS::GetComponent<Ammo>(MainEntities::MainPlayer()).ammo < 40)
 		{
 			ECS::GetComponent<Sprite>(MainEntities::MainAmmoUI()).LoadSprite(orangeBar, 90, 30, false);
 		}
-		else if (ECS::GetComponent<Ammo>(MainEntities::MainPlayer()).ammo <= 40)
+		else if (ECS::GetComponent<Ammo>(MainEntities::MainPlayer()).ammo < 50)
 		{
 			ECS::GetComponent<Sprite>(MainEntities::MainAmmoUI()).LoadSprite(yellowBar, 90, 30, false);
 		}
@@ -300,9 +298,6 @@ void ResidentEvil::Update()
 		}
 	}
 
-
-
-
 	ECS::GetComponent<HorizontalScroll>(MainEntities::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(MainEntities::MainPlayer()));
 	ECS::GetComponent<VerticalScroll>(MainEntities::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(MainEntities::MainPlayer()));
 
@@ -311,7 +306,6 @@ void ResidentEvil::Update()
 		ECS::GetComponent<HorizontalScroll>(MainEntities::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(gameOver));
 		ECS::GetComponent<VerticalScroll>(MainEntities::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(gameOver));
 	}
-
 }
 
 void ResidentEvil::Follow()
