@@ -233,7 +233,7 @@ void ResidentEvil::Update()
 
 	//call zombie spawner
 	{
-		if (zombieSpawning && activeZombies.size() < 30 && Timer::time > spawnTimer)
+		if (zombieSpawning && activeZombies.size() < 25 && Timer::time > spawnTimer)
 		{
 			activeZombies.push_back(Scene::ZombieSpawn(spawners));
 			srand(time(NULL));
