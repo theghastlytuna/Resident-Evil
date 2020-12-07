@@ -48,10 +48,3 @@ void ECS::SetIsMainPlayer(unsigned entity, bool mainPlayer)
 	}
 }
 
-void ECS::SetIsEnemy(unsigned entity, bool mainEnemy)
-{
-	if (mainEnemy)
-	{
-		MainEntities::MainEnemy(entity);
-	}
-}
