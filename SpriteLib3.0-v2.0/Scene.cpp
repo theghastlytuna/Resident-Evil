@@ -89,8 +89,8 @@ void Scene::AdjustScrollOffset()
 
 	float playerHalfSize = ECS::GetComponent<Sprite>(MainEntities::MainPlayer()).GetWidth() / 2.f;
 
-	ECS::GetComponent<HorizontalScroll>(MainEntities::MainCamera()).SetOffset((maxSizeX * BackEnd::GetAspectRatio()) - playerHalfSize);
-	ECS::GetComponent<VerticalScroll>(MainEntities::MainCamera()).SetOffset(maxSizeY - playerHalfSize);
+	ECS::GetComponent<HorizontalScroll>(MainEntities::MainCamera()).SetOffset((maxSizeX * BackEnd::GetAspectRatio()) - playerHalfSize * 11);
+	ECS::GetComponent<VerticalScroll>(MainEntities::MainCamera()).SetOffset(maxSizeY - playerHalfSize* 6);
 }
 
 void Scene::CreateCameraEntity(bool mainCamera, float windowWidth, float windowHeight, float left, float right, float bottom, float top, 
@@ -140,6 +140,41 @@ int Scene::ZombieSpawn(spawnerPos spawners[])
 		return Scene::CreateZombie("zombie_top_down.png", 50, 50, spawners[selectedPos].spawnerPosX, spawners[selectedPos].spawnerPosY, 30, 0);
 	}
 	return -1;
+}
+
+unsigned Scene::HealthBar(int posX, int posY, std::string filename)
+{
+	//Create health bar
+	auto entity = ECS::CreateEntity();
+	auto& player = ECS::GetComponent<PhysicsBody>(MainEntities::MainPlayer());
+
+
+
+	//Add components
+	ECS::AttachComponent<Sprite>(entity);
+	ECS::AttachComponent<Transform>(entity);
+	ECS::AttachComponent<PhysicsBody>(entity);
+
+	//set components
+	std::string fileName = filename;
+	ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 100, 50);
+	ECS::GetComponent<Sprite>(entity).SetTransparency(1.f);
+	ECS::GetComponent<Transform>(entity).SetPosition(vec3(posX - 10, posY + 10, 110.f));
+
+
+	auto& tempSpr = ECS::GetComponent<Sprite>(entity);
+	auto& tempPhsBody = ECS::GetComponent<PhysicsBody>(entity);
+
+	b2Body* tempBody;
+	b2BodyDef tempDef;
+	tempDef.type = b2_dynamicBody;
+	tempDef.position.Set(float32(posX), float32(posY));
+
+	tempBody = m_physicsWorld->CreateBody(&tempDef);
+
+	tempPhsBody = PhysicsBody(entity, tempBody, float(tempSpr.GetWidth()), vec2(0.f, 0.f), false, UI, 0.5f, 1.2f); //circle body
+
+	return entity;
 }
 
 unsigned Scene::CreatePlatform(std::string fileName, int spriteX, int spriteY, float posX, float posY, float shrinkX, float shrinkY, float angle)
@@ -282,8 +317,8 @@ unsigned Scene::CreateBullet(float posX, float posY)
 	ECS::AttachComponent<BulletCollide>(entity);
 
 	//Setting up components
-	std::string fileName = "whiteBall.png";
-	ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 5, 5);
+	std::string fileName = "bulletFired.png";
+	ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 5, 1);
 	ECS::GetComponent<Sprite>(entity).SetTransparency(1.f);
 	ECS::GetComponent<Transform>(entity).SetPosition(vec3(posX, posY, 100.f));
 
@@ -309,7 +344,7 @@ unsigned Scene::CreateBullet(float posX, float posY)
 	bulletPhsBody = PhysicsBody(entity, bulletBody, float(bulletSpr.GetWidth() - shrinkX), vec2(0.f, 0.f), false, FRIENDLY, ENEMY | OBJECTS | ENVIRONMENT, 0.f, 0.f); //circle body
 
 	bulletBody->SetFixedRotation(false);
-	bulletPhsBody.SetRotationAngleDeg(0.f);
+	bulletPhsBody.SetRotationAngleDeg(player.GetRotationAngleDeg());
 	bulletPhsBody.SetColor(vec4(0.f, 1.f, 6.f, 0.3f));
 
 
@@ -344,7 +379,7 @@ unsigned Scene::CreateAmmoPickup(int posX, int posY)
 
 	//Setting up components
 	std::string fileName = "ammoPickup.png";
-	ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 10, 5);
+	ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 20, 15);
 	ECS::GetComponent<Sprite>(entity).SetTransparency(1.f);
 	ECS::GetComponent<Transform>(entity).SetPosition(vec3(posX, posY, 50.f));
 

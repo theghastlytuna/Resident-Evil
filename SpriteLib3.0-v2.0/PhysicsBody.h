@@ -26,7 +26,8 @@ enum EntityCategories
 	FRIENDLY = 0x0016,//2^4 = 16
 	ENEMY = 0x0032,//2^5 = 32
 	PICKUP = 0x0064,//2^6 = 64
-	TRIGGER = 0x0128 //2^7 = 128
+	TRIGGER = 0x0128, //2^7 = 128
+	UI = 0x0256 //2^8 = 256
 };
 
 

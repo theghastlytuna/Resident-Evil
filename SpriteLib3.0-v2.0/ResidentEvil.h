@@ -37,4 +37,9 @@ protected:
 
 	int bulletEntity = -1;
 	int ammoEntity = -1;
+	std::string deadBar = "healthBarDead.png";
+	std::string redBar = "healthBarRed.png";
+	std::string orangeBar = "healthBarOrange.png";
+	std::string yellowBar = "healthBarYellow.png";
+	std::string greenBar = "healthBarGreen.png";
 };
