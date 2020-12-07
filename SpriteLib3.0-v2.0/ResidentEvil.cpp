@@ -161,7 +161,7 @@ void ResidentEvil::InitScene(float windowWidth, float windowHeight)
 	{
 		auto entity = ECS::CreateEntity();
 
-		gameOver = entity;
+
 
 		//Add components
 		ECS::AttachComponent<Sprite>(entity);
@@ -171,7 +171,52 @@ void ResidentEvil::InitScene(float windowWidth, float windowHeight)
 		std::string fileName = "kiryu.png";
 		ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 200, 200);
 		ECS::GetComponent<Sprite>(entity).SetTransparency(1.f);
-		ECS::GetComponent<Transform>(entity).SetPosition(vec3(1000.f, 1000.f, 40.f));
+		ECS::GetComponent<Transform>(entity).SetPosition(vec3(1000.f, 975.f, 40.f));
+	}
+
+	//Game over text
+	{
+		auto entity = ECS::CreateEntity();
+
+
+
+		//Add components
+		ECS::AttachComponent<Sprite>(entity);
+		ECS::AttachComponent<Transform>(entity);
+
+		//set components
+		std::string fileName = "gameOverText.png";
+		ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 220, 80);
+		ECS::GetComponent<Sprite>(entity).SetTransparency(1.f);
+		ECS::GetComponent<Transform>(entity).SetPosition(vec3(1000.f, 925.f, 41.f));
+	}
+
+	//game over rigged text bubble
+	{
+		auto entity = ECS::CreateEntity();
+
+		//Add components
+		ECS::AttachComponent<Sprite>(entity);
+		ECS::AttachComponent<Transform>(entity);
+
+		//set components
+		std::string fileName = "riggedText.png";
+		ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 150, 150);
+		ECS::GetComponent<Sprite>(entity).SetTransparency(1.f);
+		ECS::GetComponent<Transform>(entity).SetPosition(vec3(910.f, 1100.f, 41.f));
+	}
+
+	//game over camera target
+	{
+		auto entity = ECS::CreateEntity();
+		gameOver = entity;
+
+		//Add components
+		ECS::AttachComponent<Transform>(entity);
+
+		//set components
+
+		ECS::GetComponent<Transform>(entity).SetPosition(vec3(1000.f, 995.f, 40.f));
 	}
 
 	ECS::GetComponent<HorizontalScroll>(MainEntities::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(MainEntities::MainPlayer()));
