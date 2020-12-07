@@ -298,6 +298,7 @@ unsigned Scene::CreateObjectBox(std::string fileName, int spriteX, int spriteY, 
 
 unsigned Scene::CreateZombie(std::string fileName, int spriteX, int spriteY, float posX, float posY, float shrinkX, float shrinkY, bool dropsAmmo)
 {
+	srand(time(NULL));
 	auto entity = ECS::CreateEntity();
 
 	//Add components
@@ -311,7 +312,7 @@ unsigned Scene::CreateZombie(std::string fileName, int spriteX, int spriteY, flo
 	ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, spriteX, spriteY);
 	ECS::GetComponent<Sprite>(entity).SetTransparency(1.f);
 	ECS::GetComponent<Transform>(entity).SetPosition(vec3(posX, posY, 3.f));
-	ECS::GetComponent<Health>(entity).health = 50;
+	ECS::GetComponent<Health>(entity).health = 50 + 10 * (rand() % 5 - 2);
 	if (dropsAmmo)
 		ECS::GetComponent<DropAmmo>(entity).hasAmmo = true;
 
