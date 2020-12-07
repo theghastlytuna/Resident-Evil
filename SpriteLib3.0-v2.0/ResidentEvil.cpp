@@ -131,6 +131,29 @@ void ResidentEvil::Update()
 		}
 	}
 
+	//change zombie rotation
+	{
+		b2Vec2 baseVector = b2Vec2(1, 0);//0 degrees
+
+		for (int i = 0; i < activeZombies.size(); i++)
+		{
+			b2Vec2 playerPos = ECS::GetComponent<PhysicsBody>(MainEntities::MainPlayer()).GetPosition();
+			b2Vec2 enemyPos = ECS::GetComponent<PhysicsBody>(activeZombies[i]).GetPosition();
+			b2Vec2 vectorToPlayer = playerPos - enemyPos;
+
+			float dot = (baseVector.x * vectorToPlayer.x + baseVector.y * vectorToPlayer.y);
+			float angle = acos(dot / (vectorToPlayer.Length() * baseVector.Length()));
+			if (vectorToPlayer.y >= 0)
+			{
+				ECS::GetComponent<PhysicsBody>(activeZombies[i]).SetRotationAngleDeg(angle * (180 / PI));
+			}
+			else if (vectorToPlayer.y < 0)
+			{
+				ECS::GetComponent<PhysicsBody>(activeZombies[i]).SetRotationAngleDeg(-angle * (180 / PI));
+			}
+		}
+	}
+	
 	ECS::GetComponent<HorizontalScroll>(MainEntities::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(MainEntities::MainPlayer()));
 	ECS::GetComponent<VerticalScroll>(MainEntities::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(MainEntities::MainPlayer()));
 }
