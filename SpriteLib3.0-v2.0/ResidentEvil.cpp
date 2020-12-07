@@ -183,20 +183,25 @@ void ResidentEvil::Update()
 	player.GetBody()->SetLinearVelocity(b2Vec2(player.GetBody()->GetLinearVelocity().x * 0.888f, player.GetBody()->GetLinearVelocity().y * 0.888f));
 
 	//call zombie spawner
-	if (zombieSpawning && activeZombies.size() <= 8)
 	{
-		spawnedZombie = Scene::ZombieSpawn(spawners);
-	}
-
-	//check for valid spawned zombies
-	if (spawnedZombie > -1)
-	{
-		activeZombies.push_back(spawnedZombie);
-		for (int i = 0; i < activeZombies.size(); i++)
+		if (zombieSpawning && activeZombies.size() <= 8 && Timer::time > spawnTimer)
 		{
-			std::cout << activeZombies[i] << std::endl;
+			activeZombies.push_back(Scene::ZombieSpawn(spawners));
+			srand(time(NULL));
+			spawnTimer = 5 + (rand() % 5 - 3);
+			Timer::Reset();
 		}
 	}
+
+	////check for valid spawned zombies
+	//if (spawnedZombie > -1)
+	//{
+	//	activeZombies.push_back(spawnedZombie);
+	//	for (int i = 0; i < activeZombies.size(); i++)
+	//	{
+	//		std::cout << activeZombies[i] << std::endl;
+	//	}
+	//}
 
 	//check for dead zombies
 	{

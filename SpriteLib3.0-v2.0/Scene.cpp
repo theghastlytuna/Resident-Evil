@@ -131,21 +131,21 @@ void Scene::CreateCameraEntity(bool mainCamera, float windowWidth, float windowH
 
 int Scene::ZombieSpawn(spawnerPos spawners[])
 {
-	if (Timer::time > 5)
+	srand(time(NULL));
+	int selectedPos = rand() % 5;
+	int ammoDropChance = rand() % 50 + 1;
+	bool dropsAmmo = false;
+
+	if (ECS::GetComponent<Ammo>(MainEntities::MainPlayer()).ammo < 15)
 	{
-		srand(time(NULL));
-		int selectedPos = rand() % 5;
-		int ammoDropChance = rand() % 50 + 1;
-		bool dropsAmmo = false;
-		if (ammoDropChance >= 30)
-		{
-			dropsAmmo = true;
-		}
-		std::cout << "Spawning at Spawner" << selectedPos << std::endl;
-		Timer::Reset();
-		return Scene::CreateZombie("zombie_top_down.png", 50, 50, spawners[selectedPos].spawnerPosX, spawners[selectedPos].spawnerPosY, 30, 0, dropsAmmo);
+		ammoDropChance += 5;
 	}
-	return -1;
+	if (ammoDropChance >= 30)
+	{
+		dropsAmmo = true;
+	}
+	std::cout << "Spawning at Spawner" << selectedPos << std::endl;
+	return Scene::CreateZombie("zombie_top_down.png", 50, 50, spawners[selectedPos].spawnerPosX, spawners[selectedPos].spawnerPosY, 30, 0, dropsAmmo);
 }
 
 unsigned Scene::HealthBar(int posX, int posY, std::string filename)

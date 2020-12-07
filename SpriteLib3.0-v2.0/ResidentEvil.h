@@ -33,11 +33,13 @@ protected:
 	spawnerPos spawner3 = { 360, 50 }; // rigth spawn
 	spawnerPos spawner4 = { -380, 30 }; // bottom right spawn
 	spawnerPos spawners[5] = {spawner0, spawner1, spawner2, spawner3, spawner4};
+	
 	int spawnedZombie = -1;
-
 	int bulletEntity = -1;
 	int ammoEntity = -1;
+	int spawnTimer = 5;
 	unsigned gameOver = -1;
+
 	std::string deadBar = "healthBarDead.png";
 	std::string redBar = "healthBarRed.png";
 	std::string orangeBar = "healthBarOrange.png";
