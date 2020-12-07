@@ -207,6 +207,12 @@
     <ClInclude Include="Health.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="BulletCollide.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Ammo.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="include\imgui\imgui.cpp">

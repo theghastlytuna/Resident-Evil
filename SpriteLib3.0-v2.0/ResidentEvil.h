@@ -18,6 +18,9 @@ public:
 	void KeyboardDown() override;
 	void KeyboardUp() override;
 
+	std::vector<int> bulletStorage;
+	std::vector<int> ammoPickupStorage;
+
 protected:
 	ResidentEvilContactListener listener;
 	bool zombieSpawning = false;
@@ -31,4 +34,12 @@ protected:
 	spawnerPos spawners[5] = {spawner0, spawner1, spawner2, spawner3, spawner4};
 	int spawnedZombie = -1;
 	std::vector<int> activeZombies;
+
+	int bulletEntity = -1;
+	int ammoEntity = -1;
+	std::string deadBar = "healthBarDead.png";
+	std::string redBar = "healthBarRed.png";
+	std::string orangeBar = "healthBarOrange.png";
+	std::string yellowBar = "healthBarYellow.png";
+	std::string greenBar = "healthBarGreen.png";
 };

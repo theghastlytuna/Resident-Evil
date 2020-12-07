@@ -1,6 +1,8 @@
 #include "Scene.h"
 #include "Utilities.h"
 #include <time.h>
+#include "Matrix.h"
+#include <Box2D/Box2D.h>
 
 Scene::Scene(std::string name)
 {
@@ -87,8 +89,8 @@ void Scene::AdjustScrollOffset()
 
 	float playerHalfSize = ECS::GetComponent<Sprite>(MainEntities::MainPlayer()).GetWidth() / 2.f;
 
-	ECS::GetComponent<HorizontalScroll>(MainEntities::MainCamera()).SetOffset((maxSizeX * BackEnd::GetAspectRatio()) - playerHalfSize);
-	ECS::GetComponent<VerticalScroll>(MainEntities::MainCamera()).SetOffset(maxSizeY - playerHalfSize);
+	ECS::GetComponent<HorizontalScroll>(MainEntities::MainCamera()).SetOffset((maxSizeX * BackEnd::GetAspectRatio()) - playerHalfSize * 11);
+	ECS::GetComponent<VerticalScroll>(MainEntities::MainCamera()).SetOffset(maxSizeY - playerHalfSize* 6);
 }
 
 void Scene::CreateCameraEntity(bool mainCamera, float windowWidth, float windowHeight, float left, float right, float bottom, float top, 
@@ -138,6 +140,41 @@ int Scene::ZombieSpawn(spawnerPos spawners[])
 		return Scene::CreateZombie("zombie_top_down.png", 50, 50, spawners[selectedPos].spawnerPosX, spawners[selectedPos].spawnerPosY, 30, 0);
 	}
 	return -1;
+}
+
+unsigned Scene::HealthBar(int posX, int posY, std::string filename)
+{
+	//Create health bar
+	auto entity = ECS::CreateEntity();
+	auto& player = ECS::GetComponent<PhysicsBody>(MainEntities::MainPlayer());
+
+
+
+	//Add components
+	ECS::AttachComponent<Sprite>(entity);
+	ECS::AttachComponent<Transform>(entity);
+	ECS::AttachComponent<PhysicsBody>(entity);
+
+	//set components
+	std::string fileName = filename;
+	ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 100, 50);
+	ECS::GetComponent<Sprite>(entity).SetTransparency(1.f);
+	ECS::GetComponent<Transform>(entity).SetPosition(vec3(posX - 10, posY + 10, 110.f));
+
+
+	auto& tempSpr = ECS::GetComponent<Sprite>(entity);
+	auto& tempPhsBody = ECS::GetComponent<PhysicsBody>(entity);
+
+	b2Body* tempBody;
+	b2BodyDef tempDef;
+	tempDef.type = b2_dynamicBody;
+	tempDef.position.Set(float32(posX), float32(posY));
+
+	tempBody = m_physicsWorld->CreateBody(&tempDef);
+
+	tempPhsBody = PhysicsBody(entity, tempBody, float(tempSpr.GetWidth()), vec2(0.f, 0.f), false, UI, 0.5f, 1.2f); //circle body
+
+	return entity;
 }
 
 unsigned Scene::CreatePlatform(std::string fileName, int spriteX, int spriteY, float posX, float posY, float shrinkX, float shrinkY, float angle)
@@ -283,6 +320,104 @@ unsigned Scene::CreateZombie(std::string fileName, int spriteX, int spriteY, flo
 		ENEMY, PLAYER | OBJECTS | GROUND | ENVIRONMENT, 0.5f, 1.2f); //circle body
 
 	tempPhsBody.SetColor(vec4(1.f, 0.f, 1.f, 0.3f));
+
+	return entity;
+}
+
+//Create Bullet Entity
+unsigned Scene::CreateBullet(float posX, float posY)
+{
+	auto entity = ECS::CreateEntity();
+	auto player = ECS::GetComponent<PhysicsBody>(MainEntities::MainPlayer()); //Ignore green line; game crashes if you follow it's suggestion.
+
+	//Adding Components
+	ECS::AttachComponent<Sprite>(entity);
+	ECS::AttachComponent<Transform>(entity);
+	ECS::AttachComponent<PhysicsBody>(entity);
+	ECS::AttachComponent<BulletCollide>(entity);
+
+	//Setting up components
+	std::string fileName = "bulletFired.png";
+	ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 5, 1);
+	ECS::GetComponent<Sprite>(entity).SetTransparency(1.f);
+	ECS::GetComponent<Transform>(entity).SetPosition(vec3(posX, posY, 100.f));
+
+	auto& bulletSpr = ECS::GetComponent<Sprite>(entity);
+	auto& bulletPhsBody = ECS::GetComponent<PhysicsBody>(entity);
+
+	float shrinkX = 0.f;
+
+	b2Body* bulletBody;
+	b2BodyDef bulletDef;
+	bulletDef.type = b2_dynamicBody;
+	float bulletForce = 32000.f;
+	float playerAngle = player.GetRotationAngleDeg() * (PI / 180);
+
+	vec2 initialDirection = vec2(13.f, 0.f);
+	mat2 rotationMatrix = mat2(vec2(cos(playerAngle), -sin(playerAngle)), vec2(sin(playerAngle), cos(playerAngle)));
+	vec2 rotatedDirection = rotationMatrix.operator*(initialDirection);
+	bulletDef.position.Set(posX + rotatedDirection.x, posY + rotatedDirection.y);
+
+
+	bulletBody = m_physicsWorld->CreateBody(&bulletDef);
+
+	bulletPhsBody = PhysicsBody(entity, bulletBody, float(bulletSpr.GetWidth() - shrinkX), vec2(0.f, 0.f), false, FRIENDLY, ENEMY | OBJECTS | ENVIRONMENT, 0.f, 0.f); //circle body
+
+	bulletBody->SetFixedRotation(false);
+	bulletPhsBody.SetRotationAngleDeg(player.GetRotationAngleDeg());
+	bulletPhsBody.SetColor(vec4(0.f, 1.f, 6.f, 0.3f));
+
+
+	//bulletPhsBody.ApplyForce(vec3(9999.f, 0.f, 0.f));
+
+	//bulletPhsBody->velocity = 
+
+
+	bulletBody->ApplyLinearImpulseToCenter(b2Vec2(bulletForce * rotatedDirection.x, bulletForce* rotatedDirection.y), true);
+
+	//std::vector<unsigned> bulletStorage(100);
+
+	//unsigned* bulletAdd = bulletStorage.data();
+	//bulletAdd = &entity;
+
+	//PhysicsBody::m_bodiesToDelete.push_back(bulletStorage[]);
+	return entity;
+}
+
+//Create ammo pickup
+
+unsigned Scene::CreateAmmoPickup(int posX, int posY)
+{
+	//Create entity
+	auto entity = ECS::CreateEntity();
+
+	//Adding components
+	ECS::AttachComponent<Sprite>(entity);
+	ECS::AttachComponent<Transform>(entity);
+	ECS::AttachComponent<PhysicsBody>(entity);
+	ECS::AttachComponent<Ammo>(entity);
+
+	//Setting up components
+	std::string fileName = "ammoPickup.png";
+	ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 20, 15);
+	ECS::GetComponent<Sprite>(entity).SetTransparency(1.f);
+	ECS::GetComponent<Transform>(entity).SetPosition(vec3(posX, posY, 50.f));
+
+	auto& tempSpr = ECS::GetComponent<Sprite>(entity);
+	auto& tempPhsBody = ECS::GetComponent<PhysicsBody>(entity);
+
+	b2Body* tempBody;
+	b2BodyDef tempDef;
+	tempDef.type = b2_staticBody;
+	tempDef.position.Set(float32(posX), float32(posY));
+
+	int shrinkX = 0.f;
+
+	tempBody = m_physicsWorld->CreateBody(&tempDef);
+
+	tempPhsBody = PhysicsBody(entity, tempBody, float(tempSpr.GetWidth() - shrinkX), vec2(0.f, 0.f), false, PICKUP, PLAYER, 0.f, 0.f); //circle body
+
+	tempPhsBody.SetColor(vec4(10.f, 20.f, 1.f, 0.3f));
 
 	return entity;
 }

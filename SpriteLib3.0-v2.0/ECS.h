@@ -18,7 +18,8 @@
 #include "HorizontalScroll.h"
 #include "Health.h"
 #include "CanJump.h"
-
+#include "BulletCollide.h"
+#include "Ammo.h"
 
 class ECS abstract
 {
@@ -56,6 +57,7 @@ public:
 	//Side stuff for entity identifier
 	static void SetIsMainCamera(unsigned entity, bool mainCamera);
 	static void SetIsMainPlayer(unsigned entity, bool mainPlayer);
+	static void SetIsMainUI(unsigned entity, bool mainUI);
 
 
 private:

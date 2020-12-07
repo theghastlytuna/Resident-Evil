@@ -48,3 +48,10 @@ void ECS::SetIsMainPlayer(unsigned entity, bool mainPlayer)
 	}
 }
 
+void ECS::SetIsMainUI(unsigned entity, bool mainUI)
+{
+	if (mainUI)
+	{
+		MainEntities::MainUI(entity);
+	}
+}
