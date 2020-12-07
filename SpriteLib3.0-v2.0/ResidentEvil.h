@@ -11,6 +11,7 @@ public:
 	void InitScene(float windowWidth, float windowHeight) override;
 
 	void Update() override;
+	void Follow();
 
 	//Input overrides
 	void KeyboardHold() override;
@@ -19,6 +20,7 @@ public:
 
 protected:
 	int m_player = 0;
+	int m_enemy = 0;
 	ResidentEvilContactListener listener;
 	bool zombieSpawning = false;
 	bool flipped = false;

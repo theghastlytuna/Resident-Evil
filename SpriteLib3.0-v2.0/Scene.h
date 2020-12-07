@@ -37,6 +37,9 @@ public:
 	int ZombieSpawn(spawnerPos spawners[]);
 
 	unsigned CreatePlatform(std::string fileName, int spriteX, int spriteY, float posX, float posY, float shrinkX, float shrinkY, float angle);
+	unsigned CreateFloor(std::string fileName, int spriteX, int spriteY, float posX, float posY, float shrinkX, float shrinkY, float angle);
+	unsigned CreateWalls(std::string fileName, int spriteX, int spriteY, float posX, float posY, float shrinkX, float shrinkY, float angle);
+	unsigned CreateObstacles(std::string fileName, int spriteX, int spriteY, float posX, float posY, float shrinkX, float shrinkY, float angle);
 	unsigned CreateObjectBall(std::string fileName, int spriteX, int spriteY, float posX, float posY, float shrinkX, float shrinkY);
 	unsigned CreateObjectBox(std::string fileName, int spriteX, int spriteY, float posX, float posY, float shrinkX, float shrinkY);
 	unsigned CreateZombie(std::string fileName, int spriteX, int spriteY, float posX, float posY, float shrinkX, float shrinkY);
