@@ -354,7 +354,7 @@ unsigned Scene::CreateBullet(float posX, float posY)
 	auto& bulletSpr = ECS::GetComponent<Sprite>(entity);
 	auto& bulletPhsBody = ECS::GetComponent<PhysicsBody>(entity);
 
-	float shrinkX = 0.f;
+	float shrinkX = 8.f;
 
 	b2Body* bulletBody;
 	b2BodyDef bulletDef;
@@ -406,7 +406,7 @@ unsigned Scene::CreateAmmoPickup(int posX, int posY)
 	tempDef.type = b2_staticBody;
 	tempDef.position.Set(float32(posX), float32(posY));
 
-	int shrinkX = 0.f;
+	int shrinkX = 10.f;
 
 	tempBody = m_physicsWorld->CreateBody(&tempDef);
 
