@@ -76,11 +76,11 @@ void ResidentEvilContactListener::BeginContact(b2Contact* contact)
 	//Player and ammo pickup contact
 	if ((filterA.categoryBits == PICKUP && filterB.categoryBits == PLAYER) || (filterB.categoryBits == PICKUP && filterA.categoryBits == PLAYER))
 	{
-		if (filterA.categoryBits == PLAYER && ECS::GetComponent<Ammo>((int)fixtureA->GetBody()->GetUserData()).ammo != 50)
+		if (filterA.categoryBits == PLAYER && ECS::GetComponent<Ammo>((int)fixtureA->GetBody()->GetUserData()).ammo != 60)
 		{
-			if ((ECS::GetComponent<Ammo>((int)fixtureA->GetBody()->GetUserData()).ammo + 10) > 50) 
+			if ((ECS::GetComponent<Ammo>((int)fixtureA->GetBody()->GetUserData()).ammo + 10) > 60) 
 			{
-				ECS::GetComponent<Ammo>((int)fixtureA->GetBody()->GetUserData()).ammo = 50;
+				ECS::GetComponent<Ammo>((int)fixtureA->GetBody()->GetUserData()).ammo = 60;
 			}
 			else
 			{
@@ -89,11 +89,11 @@ void ResidentEvilContactListener::BeginContact(b2Contact* contact)
 			std::cout << "Ammo count: " << ECS::GetComponent<Ammo>(MainEntities::MainPlayer()).ammo << std::endl;
 			ECS::GetComponent<Ammo>((int)fixtureB->GetBody()->GetUserData()).ammoCollided = true;
 		}
-		else if (filterB.categoryBits == PLAYER && ECS::GetComponent<Ammo>((int)fixtureB->GetBody()->GetUserData()).ammo != 50)
+		else if (filterB.categoryBits == PLAYER && ECS::GetComponent<Ammo>((int)fixtureB->GetBody()->GetUserData()).ammo != 60)
 		{
-			if ((ECS::GetComponent<Ammo>((int)fixtureB->GetBody()->GetUserData()).ammo + 10) > 50)
+			if ((ECS::GetComponent<Ammo>((int)fixtureB->GetBody()->GetUserData()).ammo + 10) > 60)
 			{
-				ECS::GetComponent<Ammo>((int)fixtureB->GetBody()->GetUserData()).ammo = 50;
+				ECS::GetComponent<Ammo>((int)fixtureB->GetBody()->GetUserData()).ammo = 60;
 			}
 			else
 			{

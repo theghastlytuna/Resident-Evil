@@ -349,7 +349,7 @@ unsigned Scene::CreateBullet(float posX, float posY)
 	std::string fileName = "bulletFired.png";
 	ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 5, 1);
 	ECS::GetComponent<Sprite>(entity).SetTransparency(1.f);
-	ECS::GetComponent<Transform>(entity).SetPosition(vec3(posX, posY, 100.f));
+	ECS::GetComponent<Transform>(entity).SetPosition(vec3(posX, posY, 22.f));
 
 	auto& bulletSpr = ECS::GetComponent<Sprite>(entity);
 	auto& bulletPhsBody = ECS::GetComponent<PhysicsBody>(entity);
@@ -396,7 +396,7 @@ unsigned Scene::CreateAmmoPickup(int posX, int posY)
 	std::string fileName = "ammoPickup.png";
 	ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 20, 15);
 	ECS::GetComponent<Sprite>(entity).SetTransparency(1.f);
-	ECS::GetComponent<Transform>(entity).SetPosition(vec3(posX, posY, 50.f));
+	ECS::GetComponent<Transform>(entity).SetPosition(vec3(posX, posY, 30.f));
 
 	auto& tempSpr = ECS::GetComponent<Sprite>(entity);
 	auto& tempPhsBody = ECS::GetComponent<PhysicsBody>(entity);
