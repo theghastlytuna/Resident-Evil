@@ -19,8 +19,6 @@ public:
 	void KeyboardUp() override;
 
 protected:
-	int m_player = 0;
-	int m_enemy = 0;
 	ResidentEvilContactListener listener;
 	bool zombieSpawning = false;
 	bool flipped = false;
