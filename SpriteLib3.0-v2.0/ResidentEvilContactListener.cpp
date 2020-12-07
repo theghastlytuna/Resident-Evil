@@ -56,13 +56,14 @@ void ResidentEvilContactListener::BeginContact(b2Contact* contact)
 		if (filterA.categoryBits == ENEMY)
 		{
 			ECS::GetComponent<Health>((int)fixtureA->GetBody()->GetUserData()).health -= 10;
-			
+			ECS::GetComponent<BulletCollide>((int)fixtureB->GetBody()->GetUserData()).collided = true;
 
 		}
 		else if (filterB.categoryBits == ENEMY)
 		{
 			ECS::GetComponent<Health>((int)fixtureB->GetBody()->GetUserData()).health -= 10;
-			//DestroyTrigger;
+			ECS::GetComponent<BulletCollide>((int)fixtureA->GetBody()->GetUserData()).collided = true;
+			
 		}
 	}
 }

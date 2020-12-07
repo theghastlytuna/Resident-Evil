@@ -18,7 +18,7 @@ public:
 	void KeyboardUp() override;
 
 	std::vector<int> bulletStorage;
-	std::vector<int> deleteBullets;
+
 
 protected:
 	int m_player = 0;

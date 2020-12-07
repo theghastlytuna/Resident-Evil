@@ -175,9 +175,15 @@ void ResidentEvil::Update()
 	//Check for collided bullets
 	{
 
-		for (int i = 0; i < deleteBullets.size(); i++)
+		for (int i = 0; i < bulletStorage.size(); i++)
 		{
-			PhysicsBody::m_bodiesToDelete.push_back(deleteBullets[i]);
+			if (ECS::GetComponent<BulletCollide>(bulletStorage[i]).collided == true)
+			{
+				PhysicsBody::m_bodiesToDelete.push_back(bulletStorage[i]);
+				//int* r =(int*)bulletStorage[i];
+				bulletStorage.erase(bulletStorage.begin() + i);
+			}
+
 		}
 	}
 

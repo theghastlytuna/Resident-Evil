@@ -18,7 +18,7 @@
 #include "HorizontalScroll.h"
 #include "Health.h"
 #include "CanJump.h"
-
+#include "BulletCollide.h"
 
 class ECS abstract
 {

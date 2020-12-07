@@ -279,7 +279,7 @@ unsigned Scene::CreateBullet(float posX, float posY)
 	ECS::AttachComponent<Sprite>(entity);
 	ECS::AttachComponent<Transform>(entity);
 	ECS::AttachComponent<PhysicsBody>(entity);
-	//ECS::AttachComponent<Trigger*>(entity);
+	ECS::AttachComponent<BulletCollide>(entity);
 
 
 	std::string fileName = "whiteBall.png";
@@ -295,7 +295,7 @@ unsigned Scene::CreateBullet(float posX, float posY)
 	b2Body* bulletBody;
 	b2BodyDef bulletDef;
 	bulletDef.type = b2_dynamicBody;
-	float bulletForce = 9999.f;
+	float bulletForce = 32000.f;
 	float playerAngle = player.GetRotationAngleDeg() * (PI / 180);
 
 	vec2 initialDirection = vec2(13.f, 0.f);
