@@ -475,7 +475,7 @@ void ResidentEvil::KeyboardDown()
 			bulletEntity = Scene::CreateBullet(player.GetBody()->GetPosition().x, player.GetBody()->GetPosition().y);
 			bulletStorage.push_back(bulletEntity);
 			ECS::GetComponent<Ammo>(MainEntities::MainPlayer()).ammo -= 1;
-			std::cout << "Ammo count: " << ECS::GetComponent<Ammo>(MainEntities::MainPlayer()).ammo << std::endl;
+			//std::cout << "Ammo count: " << ECS::GetComponent<Ammo>(MainEntities::MainPlayer()).ammo << std::endl;
 		}
 	}
 

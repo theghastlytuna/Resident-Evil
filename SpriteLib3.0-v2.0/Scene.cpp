@@ -144,7 +144,7 @@ int Scene::ZombieSpawn(spawnerPos spawners[])
 	{
 		dropsAmmo = true;
 	}
-	std::cout << "Spawning at Spawner" << selectedPos << std::endl;
+	//std::cout << "Spawning at Spawner" << selectedPos << std::endl;
 	return Scene::CreateZombie("zombie_top_down.png", 50, 50, spawners[selectedPos].spawnerPosX, spawners[selectedPos].spawnerPosY, 30, 0, dropsAmmo);
 }
 
