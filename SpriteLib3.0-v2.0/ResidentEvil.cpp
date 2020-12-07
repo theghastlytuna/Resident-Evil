@@ -77,7 +77,6 @@ void ResidentEvil::InitScene(float windowWidth, float windowHeight)
 	//main player
 	{
 		auto entity = ECS::CreateEntity();
-		m_player = entity;
 		
 		ECS::SetIsMainPlayer(entity, true);
 
