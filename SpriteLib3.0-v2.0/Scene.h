@@ -49,6 +49,7 @@ public:
 			bool grow = true, bool isHold = true, unsigned int targetEntity1 = 0, unsigned int targetEntity2 = 0);
 	unsigned CreateRevealTrigger(int sizeX, int sizeY, float posX, float posY, unsigned int targetEntity0,
 		bool isHold = true, unsigned int targetEntity1 = 0, unsigned int targetEntity2 = 0);
+	unsigned CreateAmmoPickup(int posX, int posY);
 
 
 	//Gamepad Input

@@ -18,7 +18,7 @@ public:
 	void KeyboardUp() override;
 
 	std::vector<int> bulletStorage;
-
+	std::vector<int> ammoPickupStorage;
 
 protected:
 	int m_player = 0;
@@ -36,5 +36,5 @@ protected:
 	std::vector<int> activeZombies;
 
 	int bulletEntity = -1;
-
+	int ammoEntity = -1;
 };

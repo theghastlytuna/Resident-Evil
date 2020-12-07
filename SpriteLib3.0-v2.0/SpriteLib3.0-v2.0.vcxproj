@@ -136,6 +136,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Ammo.h" />
     <ClInclude Include="AnimationController.h" />
     <ClInclude Include="AnimationSpritePlayground.h" />
     <ClInclude Include="AnimationSystem.h" />

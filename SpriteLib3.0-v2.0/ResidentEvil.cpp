@@ -65,6 +65,7 @@ void ResidentEvil::InitScene(float windowWidth, float windowHeight)
 		ECS::AttachComponent<Transform>(entity);
 		ECS::AttachComponent<PhysicsBody>(entity);
 		ECS::AttachComponent<Health>(entity);
+		ECS::AttachComponent<Ammo>(entity);
 
 		//set components
 		std::string fileName = "top_downfull_body.png";
@@ -187,6 +188,18 @@ void ResidentEvil::Update()
 		}
 	}
 
+	//Check for collided ammo pickups
+	{
+		for (int i = 0; i < ammoPickupStorage.size(); i++)
+		{
+			if (ECS::GetComponent<Ammo>(ammoPickupStorage[i]).ammoCollided == true)
+			{
+				PhysicsBody::m_bodiesToDelete.push_back(ammoPickupStorage[i]);
+				ammoPickupStorage.erase(ammoPickupStorage.begin() + i);
+			}
+		}
+	}
+
 	ECS::GetComponent<HorizontalScroll>(MainEntities::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(MainEntities::MainPlayer()));
 	ECS::GetComponent<VerticalScroll>(MainEntities::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(MainEntities::MainPlayer()));
 
@@ -247,11 +260,12 @@ void ResidentEvil::KeyboardHold()
 void ResidentEvil::KeyboardDown()
 {
 	auto& player = ECS::GetComponent<PhysicsBody>(MainEntities::MainPlayer());
-	//auto& bulletEntity = ECS::GetComponent<PhysicsBody>(bulletPhyBody);
 
-	
-
-
+	if (Input::GetKeyDown(Key::P))
+	{
+		ammoEntity = Scene::CreateAmmoPickup(-40.f, 0.f);
+		ammoPickupStorage.push_back(ammoEntity);
+	}
 
 
 	if (Input::GetKeyDown(Key::T))
@@ -262,13 +276,19 @@ void ResidentEvil::KeyboardDown()
 	if (Input::GetKeyDown(Key::W) && Input::GetKey(Key::Space))
 	{
 
-		bulletEntity = Scene::CreateBullet(player.GetBody()->GetPosition().x, player.GetBody()->GetPosition().y);
-		bulletStorage.push_back(bulletEntity);
-
-		for (int i = 0; i < bulletStorage.size(); i++) 
+		if (ECS::GetComponent<Ammo>(MainEntities::MainPlayer()).ammo > 0)
 		{
-			std::cout << bulletStorage[i] << std::endl;
+			bulletEntity = Scene::CreateBullet(player.GetBody()->GetPosition().x, player.GetBody()->GetPosition().y);
+			bulletStorage.push_back(bulletEntity);
+			ECS::GetComponent<Ammo>(MainEntities::MainPlayer()).ammo -= 1;
+			std::cout << "Ammo count: " << ECS::GetComponent<Ammo>(MainEntities::MainPlayer()).ammo << std::endl;
+
+			for (int i = 0; i < bulletStorage.size(); i++)
+			{
+				std::cout << bulletStorage[i] << std::endl;
+			}
 		}
+
 
 	}
 

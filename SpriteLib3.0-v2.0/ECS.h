@@ -19,6 +19,7 @@
 #include "Health.h"
 #include "CanJump.h"
 #include "BulletCollide.h"
+#include "Ammo.h"
 
 class ECS abstract
 {

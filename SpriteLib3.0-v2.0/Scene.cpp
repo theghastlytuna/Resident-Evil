@@ -273,7 +273,7 @@ unsigned Scene::CreateZombie(std::string fileName, int spriteX, int spriteY, flo
 unsigned Scene::CreateBullet(float posX, float posY)
 {
 	auto entity = ECS::CreateEntity();
-	auto player = ECS::GetComponent<PhysicsBody>(MainEntities::MainPlayer());
+	auto player = ECS::GetComponent<PhysicsBody>(MainEntities::MainPlayer()); //Ignore green line; game crashes if you follow it's suggestion.
 
 	//Adding Components
 	ECS::AttachComponent<Sprite>(entity);
@@ -281,7 +281,7 @@ unsigned Scene::CreateBullet(float posX, float posY)
 	ECS::AttachComponent<PhysicsBody>(entity);
 	ECS::AttachComponent<BulletCollide>(entity);
 
-
+	//Setting up components
 	std::string fileName = "whiteBall.png";
 	ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 5, 5);
 	ECS::GetComponent<Sprite>(entity).SetTransparency(1.f);
@@ -326,6 +326,44 @@ unsigned Scene::CreateBullet(float posX, float posY)
 	//bulletAdd = &entity;
 
 	//PhysicsBody::m_bodiesToDelete.push_back(bulletStorage[]);
+	return entity;
+}
+
+//Create ammo pickup
+
+unsigned Scene::CreateAmmoPickup(int posX, int posY)
+{
+	//Create entity
+	auto entity = ECS::CreateEntity();
+
+	//Adding components
+	ECS::AttachComponent<Sprite>(entity);
+	ECS::AttachComponent<Transform>(entity);
+	ECS::AttachComponent<PhysicsBody>(entity);
+	ECS::AttachComponent<Ammo>(entity);
+
+	//Setting up components
+	std::string fileName = "ammoPickup.png";
+	ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 10, 5);
+	ECS::GetComponent<Sprite>(entity).SetTransparency(1.f);
+	ECS::GetComponent<Transform>(entity).SetPosition(vec3(posX, posY, 50.f));
+
+	auto& tempSpr = ECS::GetComponent<Sprite>(entity);
+	auto& tempPhsBody = ECS::GetComponent<PhysicsBody>(entity);
+
+	b2Body* tempBody;
+	b2BodyDef tempDef;
+	tempDef.type = b2_staticBody;
+	tempDef.position.Set(float32(posX), float32(posY));
+
+	int shrinkX = 0.f;
+
+	tempBody = m_physicsWorld->CreateBody(&tempDef);
+
+	tempPhsBody = PhysicsBody(entity, tempBody, float(tempSpr.GetWidth() - shrinkX), vec2(0.f, 0.f), false, PICKUP, PLAYER, 0.f, 0.f); //circle body
+
+	tempPhsBody.SetColor(vec4(10.f, 20.f, 1.f, 0.3f));
+
 	return entity;
 }
 

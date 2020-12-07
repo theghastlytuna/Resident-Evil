@@ -36,6 +36,7 @@ void ResidentEvilContactListener::BeginContact(b2Contact* contact)
 	b2Filter filterA = fixtureA->GetFilterData();
 	b2Filter filterB = fixtureB->GetFilterData();
 
+	//Player and enemy contact
 	if ((filterA.categoryBits == PLAYER && filterB.categoryBits == ENEMY) || (filterB.categoryBits == PLAYER && filterA.categoryBits == ENEMY))
 	{
 		if (filterA.categoryBits == PLAYER)
@@ -51,6 +52,7 @@ void ResidentEvilContactListener::BeginContact(b2Contact* contact)
 		}
 	}
 
+	//Bullet and enemy contact
 	if ((filterA.categoryBits == FRIENDLY && filterB.categoryBits == ENEMY) || (filterB.categoryBits == FRIENDLY && filterA.categoryBits == ENEMY))
 	{
 		if (filterA.categoryBits == ENEMY)
@@ -64,6 +66,22 @@ void ResidentEvilContactListener::BeginContact(b2Contact* contact)
 			ECS::GetComponent<Health>((int)fixtureB->GetBody()->GetUserData()).health -= 10;
 			ECS::GetComponent<BulletCollide>((int)fixtureA->GetBody()->GetUserData()).collided = true;
 			
+		}
+	}
+	//Player and ammo pickup contact
+	if ((filterA.categoryBits == PICKUP && filterB.categoryBits == PLAYER) || (filterB.categoryBits == PICKUP && filterA.categoryBits == PLAYER))
+	{
+		if (filterA.categoryBits == PLAYER)
+		{
+			ECS::GetComponent<Ammo>((int)fixtureA->GetBody()->GetUserData()).ammo += 20;
+			std::cout << "Ammo count: " << ECS::GetComponent<Ammo>(MainEntities::MainPlayer()).ammo << std::endl;
+			ECS::GetComponent<Ammo>((int)fixtureB->GetBody()->GetUserData()).ammoCollided = true;
+		}
+		else if (filterB.categoryBits == PLAYER)
+		{
+			ECS::GetComponent<Ammo>((int)fixtureB->GetBody()->GetUserData()).ammo += 20;
+			std::cout << "Ammo count: " << ECS::GetComponent<Ammo>(MainEntities::MainPlayer()).ammo << std::endl;
+			ECS::GetComponent<Ammo>((int)fixtureA->GetBody()->GetUserData()).ammoCollided = true;
 		}
 	}
 }
