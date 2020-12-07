@@ -43,4 +43,12 @@ protected:
 	std::string orangeBar = "healthBarOrange.png";
 	std::string yellowBar = "healthBarYellow.png";
 	std::string greenBar = "healthBarGreen.png";
+
+	std::string ammoBar0 = "ammoBar0.png";
+	std::string ammoBar1 = "ammoBar1.png";
+	std::string ammoBar2 = "ammoBar2.png";
+	std::string ammoBar3 = "ammoBar3.png";
+	std::string ammoBar4 = "ammoBar4.png";
+	std::string ammoBar5 = "ammoBar5.png";
+	std::string ammoBar6 = "ammoBar6.png";
 };

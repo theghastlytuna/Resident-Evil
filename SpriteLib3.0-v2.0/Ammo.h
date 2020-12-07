@@ -3,6 +3,6 @@
 class Ammo 
 {
 public:
-	int ammo = 20;
+	int ammo = 30;
 	bool ammoCollided = false;
 };
