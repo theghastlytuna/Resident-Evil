@@ -26,6 +26,7 @@ void ResidentEvil::InitScene(float windowWidth, float windowHeight)
 	Scene::CreateFloor("floorbig.png", 400, 400, 0, -200, 0, 0, 0);// floor south
 	Scene::CreateFloor("floorbig.png", 400, 400, 200, -200, 0, 0, 0);// floor south west 
 	Scene::CreateFloor("floorbig.png", 400, 400, -200, -200, 0, 0, 0);// floor south east 
+
 	Scene::CreatePlatform("black.png", 10, 400, -400, -200, 0, 0, 0);//east south wall
 	Scene::CreatePlatform("black.png", 10, 400, -400, 0, 0, 0, 0);//east wall
 	Scene::CreatePlatform("black.png", 10, 400, -400, 200, 0, 0, 0);//east north wall
@@ -38,20 +39,23 @@ void ResidentEvil::InitScene(float windowWidth, float windowHeight)
 	Scene::CreatePlatform("black.png", 400, 10, 200, -400, 0, 0, 0);//south west wall
 	Scene::CreatePlatform("black.png", 400, 10, 0, -400, 0, 0, 0);//south wall
 	Scene::CreatePlatform("black.png", 400, 10, -200, -400, 0, 0, 0);//south east wall
+
 	Scene::CreatePlatform("boxSprite.jpg", 100, 20, -100, -10, 0, 0, 45);//obstacle centre left rectangle
 	Scene::CreatePlatform("boxSprite.jpg", 100, 20, 100, -10, 0, 0, -45);//obstacle centre right rectangle
+	Scene::CreatePlatform("table.png", 120, 100, 0, -100, 50, 30, 0);//obstacle centre bottom table
 	Scene::CreatePlatform("boxSprite.jpg", 50, 50, 300, 300, 0, 0, -15);//obstacle north east box
-	Scene::CreatePlatform("boxSprite.jpg", 120, 10, -275, 300, 0, 0, 25);//obstacle north west rectangle
-	Scene::CreatePlatform("boxSprite.jpg", 120, 10, -275, -300, 0, 0, 45);//obstacle south west rectangle
-	Scene::CreatePlatform("table.png", 120, 100, 0, -100, 70, 30, 0);//obstacle centre bottom table
+	Scene::CreatePlatform("BookShelf_1.png", 120, 10, -275, 300, 0, 0, 25);//obstacle north west bookshelf
+	Scene::CreatePlatform("BookShelf_1.png", 70, 10, -140, 340, 0, 0, 180);//obstacle north west bookshelf
+	Scene::CreatePlatform("BookShelf_1.png", 70, 10, -70, 340, 0, 0, 0);//obstacle north west bookshelf
+	Scene::CreatePlatform("BookShelf_1.png", 70, 10, 40, 300, 0, 0, 90);//obstacle north bookshelf
+	Scene::CreatePlatform("BookShelf_1.png", 120, 10, -275, -300, 0, 0, 45);//obstacle south west rectangle
+	Scene::CreatePlatform("BookShelf_1.png", 70, 10, -240, -250, 0, 0, 150);//obstacle south west rectangle
 	Scene::CreatePlatform("boxSprite.jpg", 100, 100, 250, -250, 0, 0, 75);//obstacle south east box
-	Scene::CreatePlatform("boxSprite.jpg", 70, 10, -240, -250, 0, 0, -30);//obstacle south west rectangle 
-	Scene::CreatePlatform("boxSprite.jpg", 70, 10, -140, 340, 0, 0, 0);//obstacle north west rectangle
 	Scene::CreatePlatform("boxSprite.jpg", 70, 10, 300, 360, 0, 0, 90);//obstacle north east wall
 	Scene::CreatePlatform("boxSprite.jpg", 70, 20, -360, 0, 0, 0, 0);//obstacle west wall
+	Scene::CreatePlatform("boxSprite.jpg", 70, 20, 360, 100, 0, 0, 30);//obstacle east wall
 	Scene::CreatePlatform("boxSprite.jpg", 70, 20, 310, 0, 0, 0, 30);//obstacle east rectangle
-	activeZombies.push_back(Scene::CreateZombie("zombie_top_down.png", 50, 50, 0, 100, 30, 0));
-	activeZombies.push_back(Scene::CreateZombie("zombie_top_down.png", 50, 50, 100, 0, 30, 0));
+
 	float aspectRatio = windowWidth / windowHeight;
 
 	//Creates Camera Entity
