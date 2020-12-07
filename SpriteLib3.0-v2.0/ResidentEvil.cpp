@@ -117,52 +117,11 @@ void ResidentEvil::InitScene(float windowWidth, float windowHeight)
 
 	}
 
-	//enemy
-	{
-		auto entity = ECS::CreateEntity();
-
-
-		//Add components
-		ECS::AttachComponent<Sprite>(entity);
-		ECS::AttachComponent<Transform>(entity);
-		ECS::AttachComponent<PhysicsBody>(entity);
-		ECS::AttachComponent<Health>(entity);
-
-		//set components
-		std::string fileName = "zombie_top_down.png";
-		ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 50, 50);
-		ECS::GetComponent<Sprite>(entity).SetTransparency(1.f);
-		ECS::GetComponent<Transform>(entity).SetPosition(vec3(0.f, 30.f, 2.f));
-		ECS::GetComponent<Health>(entity).health = 50;
-
-		auto& tempSpr = ECS::GetComponent<Sprite>(entity);
-		auto& tempPhsBody = ECS::GetComponent<PhysicsBody>(entity);
-
-		float shrinkX = 30.f;
-
-		b2Body* tempBody;
-		b2BodyDef tempDef;
-		tempDef.type = b2_staticBody;
-		tempDef.position.Set(float32(60.f), float32(0.f));
-
-		tempBody = m_physicsWorld->CreateBody(&tempDef);
-
-		tempPhsBody = PhysicsBody(entity, tempBody, float(tempSpr.GetWidth() - shrinkX), vec2(0.f, 0.f), false, 
-				ENEMY, PLAYER | OBJECTS | GROUND | ENVIRONMENT | FRIENDLY, 0.5f, 1.2f); //circle body
-
-		tempPhsBody.SetRotationAngleDeg(0.f);
-		tempPhsBody.SetColor(vec4(1.f, 0.f, 1.f, 0.3f));
-
-		
-	}
-
 	//Health Bar
 	{
 		//Create health bar
 		auto entity = ECS::CreateEntity();
 		ECS::SetIsMainUI(entity, true);
-
-
 
 		//Add components
 		ECS::AttachComponent<Sprite>(entity);
@@ -211,6 +170,7 @@ void ResidentEvil::Update()
 			if (ECS::GetComponent<Health>(activeZombies[i]).health <= 1)
 			{
 				PhysicsBody::m_bodiesToDelete.push_back(activeZombies[i]);
+				activeZombies.erase(activeZombies.begin() + i);
 			}
 		}
 	}

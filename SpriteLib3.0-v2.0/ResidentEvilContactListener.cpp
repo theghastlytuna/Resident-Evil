@@ -53,7 +53,7 @@ void ResidentEvilContactListener::BeginContact(b2Contact* contact)
 	}
 
 	//Bullet and enemy contact
-	if ((filterA.categoryBits == FRIENDLY && filterB.categoryBits == ENEMY) || (filterB.categoryBits == FRIENDLY && filterA.categoryBits == ENEMY))
+	if (filterA.categoryBits == FRIENDLY || filterB.categoryBits == FRIENDLY)
 	{
 		if (filterA.categoryBits == ENEMY)
 		{
@@ -65,7 +65,14 @@ void ResidentEvilContactListener::BeginContact(b2Contact* contact)
 		{
 			ECS::GetComponent<Health>((int)fixtureB->GetBody()->GetUserData()).health -= 10;
 			ECS::GetComponent<BulletCollide>((int)fixtureA->GetBody()->GetUserData()).collided = true;
-			
+		}
+		else if (filterA.categoryBits == GROUND)
+		{
+			ECS::GetComponent<BulletCollide>((int)fixtureB->GetBody()->GetUserData()).collided = true;
+		}
+		else if (filterB.categoryBits == GROUND)
+		{
+			ECS::GetComponent<BulletCollide>((int)fixtureA->GetBody()->GetUserData()).collided = true;
 		}
 	}
 	//Player and ammo pickup contact
