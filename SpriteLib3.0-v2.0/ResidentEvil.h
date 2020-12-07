@@ -37,6 +37,7 @@ protected:
 
 	int bulletEntity = -1;
 	int ammoEntity = -1;
+	unsigned gameOver = -1;
 	std::string deadBar = "healthBarDead.png";
 	std::string redBar = "healthBarRed.png";
 	std::string orangeBar = "healthBarOrange.png";

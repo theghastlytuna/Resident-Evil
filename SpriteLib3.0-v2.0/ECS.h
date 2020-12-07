@@ -58,6 +58,7 @@ public:
 	static void SetIsMainCamera(unsigned entity, bool mainCamera);
 	static void SetIsMainPlayer(unsigned entity, bool mainPlayer);
 	static void SetIsMainUI(unsigned entity, bool mainUI);
+	static void SetIsMainAmmoUI(unsigned entity, bool mainAmmoUI);
 
 private:
 	static entt::registry* m_reg;

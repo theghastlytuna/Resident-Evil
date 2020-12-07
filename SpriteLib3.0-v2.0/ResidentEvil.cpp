@@ -77,7 +77,7 @@ void ResidentEvil::InitScene(float windowWidth, float windowHeight)
 		auto& tempSpr = ECS::GetComponent<Sprite>(entity);
 		auto& tempPhsBody = ECS::GetComponent<PhysicsBody>(entity);
 
-		float shrinkX = 30.f;
+		float shrinkX = 35.f;
 
 		b2Body* tempBody;
 		b2BodyDef tempDef;
@@ -116,7 +116,7 @@ void ResidentEvil::InitScene(float windowWidth, float windowHeight)
 		auto& tempSpr = ECS::GetComponent<Sprite>(entity);
 		auto& tempPhsBody = ECS::GetComponent<PhysicsBody>(entity);
 
-		float shrinkX = 30.f;
+		float shrinkX = 35.f;
 
 		b2Body* tempBody;
 		b2BodyDef tempDef;
@@ -153,6 +153,41 @@ void ResidentEvil::InitScene(float windowWidth, float windowHeight)
 		ECS::GetComponent<Transform>(entity).SetPosition(vec3(1000.f, 1000.f, 40.f));
 	}
 
+	//Ammo Bar
+	{
+		//Create health bar
+		auto entity = ECS::CreateEntity();
+		ECS::SetIsMainAmmoUI(entity, true);
+
+
+
+		//Add components
+		ECS::AttachComponent<Sprite>(entity);
+		ECS::AttachComponent<Transform>(entity);
+
+		//set components
+		std::string fileName = "healthBarGreen.png";
+		ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 90, 30);
+		ECS::GetComponent<Sprite>(entity).SetTransparency(1.f);
+		ECS::GetComponent<Transform>(entity).SetPosition(vec3(1000.f, 1000.f, 40.f));
+	}
+
+	//Game over Kiryu
+	{
+		auto entity = ECS::CreateEntity();
+
+		gameOver = entity;
+
+		//Add components
+		ECS::AttachComponent<Sprite>(entity);
+		ECS::AttachComponent<Transform>(entity);
+
+		//set components
+		std::string fileName = "kiryu.png";
+		ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 200, 200);
+		ECS::GetComponent<Sprite>(entity).SetTransparency(1.f);
+		ECS::GetComponent<Transform>(entity).SetPosition(vec3(1000.f, 1000.f, 40.f));
+	}
 
 	ECS::GetComponent<HorizontalScroll>(MainEntities::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(MainEntities::MainPlayer()));
 	ECS::GetComponent<VerticalScroll>(MainEntities::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(MainEntities::MainPlayer()));
@@ -245,11 +280,47 @@ void ResidentEvil::Update()
 		}
 	}
 
+	//Check player ammo bar
+	{
+		ECS::GetComponent<Transform>(MainEntities::MainAmmoUI()).SetPosition(vec3(player.GetPosition().x - 180, player.GetPosition().y + 80, 40.f));
+
+		if (ECS::GetComponent<Ammo>(MainEntities::MainPlayer()).ammo == 0)
+		{
+			ECS::GetComponent<Sprite>(MainEntities::MainAmmoUI()).LoadSprite(deadBar, 90, 30, false);
+		}
+		else if (ECS::GetComponent<Ammo>(MainEntities::MainPlayer()).ammo <= 10)
+		{
+			ECS::GetComponent<Sprite>(MainEntities::MainAmmoUI()).LoadSprite(deadBar, 90, 30, false);
+		}
+		else if (ECS::GetComponent<Ammo>(MainEntities::MainPlayer()).ammo <= 20)
+		{
+			ECS::GetComponent<Sprite>(MainEntities::MainAmmoUI()).LoadSprite(redBar, 90, 30, false);
+		}
+		else if (ECS::GetComponent<Ammo>(MainEntities::MainPlayer()).ammo <= 30)
+		{
+			ECS::GetComponent<Sprite>(MainEntities::MainAmmoUI()).LoadSprite(orangeBar, 90, 30, false);
+		}
+		else if (ECS::GetComponent<Ammo>(MainEntities::MainPlayer()).ammo <= 40)
+		{
+			ECS::GetComponent<Sprite>(MainEntities::MainAmmoUI()).LoadSprite(yellowBar, 90, 30, false);
+		}
+		else if (ECS::GetComponent<Ammo>(MainEntities::MainPlayer()).ammo == 50)
+		{
+			ECS::GetComponent<Sprite>(MainEntities::MainUI()).LoadSprite(greenBar, 90, 30, false);
+		}
+	}
+
+
 
 
 	ECS::GetComponent<HorizontalScroll>(MainEntities::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(MainEntities::MainPlayer()));
 	ECS::GetComponent<VerticalScroll>(MainEntities::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(MainEntities::MainPlayer()));
 
+	if (ECS::GetComponent<Health>(MainEntities::MainPlayer()).health <= 0)
+	{
+		ECS::GetComponent<HorizontalScroll>(MainEntities::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(gameOver));
+		ECS::GetComponent<VerticalScroll>(MainEntities::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(gameOver));
+	}
 
 }
 

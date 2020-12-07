@@ -55,3 +55,11 @@ void ECS::SetIsMainUI(unsigned entity, bool mainUI)
 		MainEntities::MainUI(entity);
 	}
 }
+
+void ECS::SetIsMainAmmoUI(unsigned entity, bool mainAmmoUI)
+{
+	if (mainAmmoUI)
+	{
+		MainEntities::MainAmmoUI(entity);
+	}
+}
