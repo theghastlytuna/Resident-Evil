@@ -2,7 +2,7 @@
 
 entt::registry* ECS::m_reg = nullptr;
 
-void ECS::AttachRegister(entt::registry * reg)
+void ECS::AttachRegister(entt::registry* reg)
 {
 	//Attach reference to the registry
 	m_reg = reg;
@@ -45,5 +45,21 @@ void ECS::SetIsMainPlayer(unsigned entity, bool mainPlayer)
 	if (mainPlayer)
 	{
 		MainEntities::MainPlayer(entity);
+	}
+}
+
+void ECS::SetIsMainUI(unsigned entity, bool mainUI)
+{
+	if (mainUI)
+	{
+		MainEntities::MainUI(entity);
+	}
+}
+
+void ECS::SetIsMainAmmoUI(unsigned entity, bool mainAmmoUI)
+{
+	if (mainAmmoUI)
+	{
+		MainEntities::MainAmmoUI(entity);
 	}
 }

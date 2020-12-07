@@ -12,6 +12,13 @@
 class Scene
 {
 public:
+
+	struct spawnerPos
+	{
+		int spawnerPosX;
+		int spawnerPosY;
+	};
+
 	Scene() { m_sceneReg = new entt::registry(); m_physicsWorld = new b2World(m_gravity); }
 	Scene(std::string name);
 	~Scene() { }
@@ -27,10 +34,14 @@ public:
 	void AdjustScrollOffset();
 	void CreateCameraEntity(bool mainCamera, float windowWidth, float windowHeight, float left, float right, float bottom, float top, 
 								float zNear, float zFar, float aspectRatio, bool vertScroll=false, bool horizScroll=false);
+	int ZombieSpawn(spawnerPos spawners[]);
 
 	unsigned CreatePlatform(std::string fileName, int spriteX, int spriteY, float posX, float posY, float shrinkX, float shrinkY, float angle);
+	unsigned CreateFloor(std::string fileName, int spriteX, int spriteY, float posX, float posY, float shrinkX, float shrinkY, float angle);
 	unsigned CreateObjectBall(std::string fileName, int spriteX, int spriteY, float posX, float posY, float shrinkX, float shrinkY);
 	unsigned CreateObjectBox(std::string fileName, int spriteX, int spriteY, float posX, float posY, float shrinkX, float shrinkY);
+	unsigned CreateZombie(std::string fileName, int spriteX, int spriteY, float posX, float posY, float shrinkX, float shrinkY, bool dropsAmmo);
+	unsigned CreateBullet(float posX, float posY);
 	unsigned CreateDestroyTrigger(int sizeX, int sizeY, float posX, float posY, unsigned int targetEntity0,
 			bool isHold = true, unsigned int targetEntity1 = 0, unsigned int targetEntity2 = 0);
 	unsigned CreateRotationTrigger(int sizeX, int sizeY, float posX, float posY, unsigned int targetEntity0, 
@@ -39,7 +50,8 @@ public:
 			bool grow = true, bool isHold = true, unsigned int targetEntity1 = 0, unsigned int targetEntity2 = 0);
 	unsigned CreateRevealTrigger(int sizeX, int sizeY, float posX, float posY, unsigned int targetEntity0,
 		bool isHold = true, unsigned int targetEntity1 = 0, unsigned int targetEntity2 = 0);
-
+	unsigned CreateAmmoPickup(int posX, int posY);
+	unsigned HealthBar(int posX, int posY, std::string filename);
 
 	//Gamepad Input
 	//Because these are virtual you can override them in your inherited classes.
@@ -83,6 +95,9 @@ public:
 
 	//Set window size (makes sure the camera aspect is proper)
 	void SetWindowSize(float windowWidth, float windowHeight);
+
+
+
 protected:
 	b2World* m_physicsWorld = nullptr;
 	b2Vec2 m_gravity = b2Vec2(float32(0.f), float32(0.f));
