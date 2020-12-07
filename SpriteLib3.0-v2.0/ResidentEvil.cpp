@@ -1,6 +1,7 @@
 #include "ResidentEvil.h"
 #include "Utilities.h"
 #include "Timer.h"
+#include <math.h>
 
 ResidentEvil::ResidentEvil(std::string name)
 	: Scene(name)
@@ -16,7 +17,41 @@ void ResidentEvil::InitScene(float windowWidth, float windowHeight)
 	m_sceneReg = new entt::registry;
 	Scene::SetClearColor(vec4(0.f, 0.f, 0.f, 1.f));
 	ECS::AttachRegister(m_sceneReg);
-
+	Scene::CreateFloor("floorbig.png", 400, 400, 0, 0, 0, 0, 0);//floor centre
+	Scene::CreateFloor("floorbig.png", 400, 400, 200, 0, 0, 0, 0);//floor west
+	Scene::CreateFloor("floorbig.png", 400, 400, 200, 200, 0, 0, 0);//floor north west
+	Scene::CreateFloor("floorbig.png", 400, 400, 0, 200, 0, 0, 0);//floor north
+	Scene::CreateFloor("floorbig.png", 400, 400, -200, 0, 0, 0, 0);//floor east
+	Scene::CreateFloor("floorbig.png", 400, 400, -200, 200, 0, 0, 0);//floor north east
+	Scene::CreateFloor("floorbig.png", 400, 400, 0, -200, 0, 0, 0);// floor south
+	Scene::CreateFloor("floorbig.png", 400, 400, 200, -200, 0, 0, 0);// floor south west 
+	Scene::CreateFloor("floorbig.png", 400, 400, -200, -200, 0, 0, 0);// floor south east 
+	Scene::CreateWalls("black.png", 10, 400, -400, -200, 0, 0, 0);//east south wall
+	Scene::CreateWalls("black.png", 10, 400, -400, 0, 0, 0, 0);//east wall
+	Scene::CreateWalls("black.png", 10, 400, -400, 200, 0, 0, 0);//east north wall
+	Scene::CreateWalls("black.png", 400, 10, -200, 400, 0, 0, 0);//north east wall
+	Scene::CreateWalls("black.png", 400, 10, 0, 400, 0, 0, 0);//north wall
+	Scene::CreateWalls("black.png", 400, 10, 200, 400, 0, 0, 0);//north west wall
+	Scene::CreateWalls("black.png", 10, 400, 400, 200, 0, 0, 0);//west north wall
+	Scene::CreateWalls("black.png", 10, 400, 400, 0, 0, 0, 0);//west wall
+	Scene::CreateWalls("black.png", 10, 400, 400, -200, 0, 0, 0);//west south wall
+	Scene::CreateWalls("black.png", 400, 10, 200, -400, 0, 0, 0);//south west wall
+	Scene::CreateWalls("black.png", 400, 10, 0, -400, 0, 0, 0);//south wall
+	Scene::CreateWalls("black.png", 400, 10, -200, -400, 0, 0, 0);//south east wall
+	Scene::CreateObstacles("boxSprite.jpg", 100, 20, -100, -10, 0, 0, 45);//obstacle centre left rectangle
+	Scene::CreateObstacles("boxSprite.jpg", 100, 20, 100, -10, 0, 0, -45);//obstacle centre right rectangle
+	Scene::CreateObstacles("boxSprite.jpg", 50, 50, 300, 300, 0, 0, -15);//obstacle north east box
+	Scene::CreateObstacles("boxSprite.jpg", 120, 10, -275, 300, 0, 0, 25);//obstacle north west rectangle
+	Scene::CreateObstacles("boxSprite.jpg", 120, 10, -275, -300, 0, 0, 45);//obstacle south west rectangle
+	Scene::CreateObstacles("boxSprite.jpg", 120, 10, 0, -100, 0, 0, 0);//obstacle centre bottom rectangle
+	Scene::CreateObstacles("boxSprite.jpg", 100, 100, 250, -250, 0, 0, 75);//obstacle south east box
+	Scene::CreateObstacles("boxSprite.jpg", 70, 10, -240, -250, 0, 0, -30);//obstacle south west rectangle 
+	Scene::CreateObstacles("boxSprite.jpg", 70, 10, -140, 340, 0, 0, 0);//obstacle north west rectangle
+	Scene::CreateObstacles("boxSprite.jpg", 70, 10, 300, 360, 0, 0, 90);//obstacle north east wall
+	Scene::CreateObstacles("boxSprite.jpg", 70, 20, -360, 0, 0, 0, 0);//obstacle west wall
+	Scene::CreateObstacles("boxSprite.jpg", 70, 20, 310, 0, 0, 0, 30);//obstacle east rectangle
+	activeZombies.push_back(Scene::CreateZombie("zombie_top_down.png", 50, 50, 0, 100, 30, 0));
+	activeZombies.push_back(Scene::CreateZombie("zombie_top_down.png", 50, 50, 100, 0, 30, 0));
 	float aspectRatio = windowWidth / windowHeight;
 
 	//Creates Camera Entity
@@ -36,26 +71,11 @@ void ResidentEvil::InitScene(float windowWidth, float windowHeight)
 		ECS::GetComponent<VerticalScroll>(entity).SetCam(&ECS::GetComponent<Camera>(entity));
 	}
 
-	//Setup floor
-	{
-		//Creates entity
-		auto entity = ECS::CreateEntity();
-
-		//Add components
-		ECS::AttachComponent<Sprite>(entity);
-		ECS::AttachComponent<Transform>(entity);
-
-		//Set up the components
-		std::string fileName = "FloorBig.png";
-		ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 400, 400);
-		ECS::GetComponent<Sprite>(entity).SetTransparency(1.f);
-		ECS::GetComponent<Transform>(entity).SetPosition(vec3(0.f, 0.f, 0.f));
-	}
-
 	//main player
 	{
 		auto entity = ECS::CreateEntity();
 		m_player = entity;
+		
 		ECS::SetIsMainPlayer(entity, true);
 
 		//Add components
@@ -93,6 +113,8 @@ void ResidentEvil::InitScene(float windowWidth, float windowHeight)
 
 	}
 
+
+
 	ECS::GetComponent<HorizontalScroll>(MainEntities::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(MainEntities::MainPlayer()));
 	ECS::GetComponent<VerticalScroll>(MainEntities::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(MainEntities::MainPlayer()));
 }
@@ -100,6 +122,7 @@ void ResidentEvil::InitScene(float windowWidth, float windowHeight)
 void ResidentEvil::Update()
 {
 	auto& player = ECS::GetComponent<PhysicsBody>(MainEntities::MainPlayer());
+
 
 	Scene::AdjustScrollOffset();
 
@@ -110,6 +133,7 @@ void ResidentEvil::Update()
 	{
 		spawnedZombie = Scene::ZombieSpawn(spawners);
 	}
+
 	//check for valid spawned zombies
 	if (spawnedZombie > -1)
 	{
@@ -154,8 +178,28 @@ void ResidentEvil::Update()
 		}
 	}
 	
+	Follow();
 	ECS::GetComponent<HorizontalScroll>(MainEntities::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(MainEntities::MainPlayer()));
 	ECS::GetComponent<VerticalScroll>(MainEntities::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(MainEntities::MainPlayer()));
+}
+
+void ResidentEvil::Follow()
+{
+	for (int a = 0; a < activeZombies.size(); a++)
+	{
+
+		auto& player = ECS::GetComponent<PhysicsBody>(MainEntities::MainPlayer());
+		auto& enemy = ECS::GetComponent<PhysicsBody>(activeZombies[a]);
+
+		vec2 total = vec2(player.GetPosition().x - enemy.GetPosition().x, player.GetPosition().y - enemy.GetPosition().y);
+		float length = (sqrt((total.x * total.x) + (total.y * total.y)));
+		vec2 normal = vec2(total.x / length, total.y / length);
+		
+		//enemy.GetBody()->ApplyForceToCenter(b2Vec2(normal.x * 3000.f, normal.y * 3000.f ),true);
+		enemy.GetBody()->SetLinearVelocity(b2Vec2(normal.x * 15.f, normal.y * 15.f));
+
+
+	}
 }
 
 void ResidentEvil::KeyboardHold()
@@ -207,6 +251,8 @@ void ResidentEvil::KeyboardHold()
 		player.GetBody()->ApplyForceToCenter(b2Vec2(300000.f, 0.f), true);
 		player.SetRotationAngleDeg(0.f);
 	}
+
+
 }
 
 void ResidentEvil::KeyboardDown()
