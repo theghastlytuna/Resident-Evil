@@ -24,7 +24,7 @@ public:
 
 protected:
 	ResidentEvilContactListener listener;
-	bool zombieSpawning = false;
+	bool zombieSpawning = true;
 	bool flipped = false;
 
 	spawnerPos spawner0 = { 350, 240 }; // top rigth spawn 

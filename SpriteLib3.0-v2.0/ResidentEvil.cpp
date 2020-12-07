@@ -457,21 +457,19 @@ void ResidentEvil::KeyboardDown()
 {
 	auto& player = ECS::GetComponent<PhysicsBody>(MainEntities::MainPlayer());
 
-	if (Input::GetKeyDown(Key::N))
-	{
-		ammoEntity = Scene::CreateAmmoPickup(-40.f, 0.f);
-		ammoPickupStorage.push_back(ammoEntity);
-	}
+	//if (Input::GetKeyDown(Key::N))
+	//{
+	//	ammoEntity = Scene::CreateAmmoPickup(-40.f, 0.f);
+	//	ammoPickupStorage.push_back(ammoEntity);
+	//}
 
-
-	if (Input::GetKeyDown(Key::T))
-	{
-		PhysicsBody::SetDraw(!PhysicsBody::GetDraw());
-	}
+	//if (Input::GetKeyDown(Key::T))
+	//{
+	//	PhysicsBody::SetDraw(!PhysicsBody::GetDraw());
+	//}
 
 	if (Input::GetKeyDown(Key::W) && Input::GetKey(Key::Space))
 	{
-
 		if (ECS::GetComponent<Ammo>(MainEntities::MainPlayer()).ammo > 0)
 		{
 			bulletEntity = Scene::CreateBullet(player.GetBody()->GetPosition().x, player.GetBody()->GetPosition().y);
@@ -479,27 +477,25 @@ void ResidentEvil::KeyboardDown()
 			ECS::GetComponent<Ammo>(MainEntities::MainPlayer()).ammo -= 1;
 			std::cout << "Ammo count: " << ECS::GetComponent<Ammo>(MainEntities::MainPlayer()).ammo << std::endl;
 		}
-
-
 	}
 
-	if (Input::GetKeyDown(Key::J))
-	{
-		if (zombieSpawning == false)
-			zombieSpawning = true;
-		else
-			zombieSpawning = false;
-	}
+	//if (Input::GetKeyDown(Key::J))
+	//{
+	//	if (zombieSpawning == false)
+	//		zombieSpawning = true;
+	//	else
+	//		zombieSpawning = false;
+	//}
 
-	if (Input::GetKeyDown(Key::K))//DELETE ALL ZOMBIES
-	{
-		for (int i = 0; i < activeZombies.size(); i++)
-		{
-			PhysicsBody::m_bodiesToDelete.push_back(activeZombies[i]);
-		}
-		activeZombies.clear();
+	//if (Input::GetKeyDown(Key::K))//DELETE ALL ZOMBIES
+	//{
+	//	for (int i = 0; i < activeZombies.size(); i++)
+	//	{
+	//		PhysicsBody::m_bodiesToDelete.push_back(activeZombies[i]);
+	//	}
+	//	activeZombies.clear();
 
-	}
+	//}
 }
 
 void ResidentEvil::KeyboardUp()
