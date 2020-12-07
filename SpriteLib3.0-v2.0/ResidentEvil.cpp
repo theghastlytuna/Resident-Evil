@@ -40,8 +40,8 @@ void ResidentEvil::InitScene(float windowWidth, float windowHeight)
 	Scene::CreatePlatform("black.png", 400, 10, 0, -400, 0, 0, 0);//south wall
 	Scene::CreatePlatform("black.png", 400, 10, -200, -400, 0, 0, 0);//south east wall
 
-	Scene::CreatePlatform("Table_down.png", 100, 70, -100, -10, 0, 0, 45);//obstacle centre left table
-	Scene::CreatePlatform("Table_down.png", 100, 70, 100, -10, 0, 0, -45);//obstacle centre right table
+	Scene::CreatePlatform("Table_down.png", 40, 70, -100, -10, 0, 0, 45);//obstacle centre left table
+	Scene::CreatePlatform("Table_down.png", 40, 70, 100, -10, 0, 0, -45);//obstacle centre right table
 	Scene::CreatePlatform("table.png", 120, 100, 0, -100, 50, 30, 0);//obstacle centre bottom table
 	Scene::CreatePlatform("Statue_1.png", 50, 50, 300, 300, 0, 0, 165);//obstacle north east box
 	Scene::CreatePlatform("BookShelf_1.png", 120, 30, -285, 300, 0, 0, 25);//obstacle north west bookshelf
@@ -51,8 +51,8 @@ void ResidentEvil::InitScene(float windowWidth, float windowHeight)
 	Scene::CreatePlatform("BookShelf_1.png", 120, 30, -275, -300, 0, 0, 45);//obstacle south west table
 	Scene::CreatePlatform("BookShelf_1.png", 70, 30, -240, -250, 0, 0, 150);//obstacle south west table
 	Scene::CreatePlatform("Statue_1.png", 100, 100, 250, -250, 0, 0, 75);//obstacle south east statue
-	Scene::CreatePlatform("Table_down.png", 70, 50, 300, 360, 0, 0, 90);//obstacle north east wall
-	Scene::CreatePlatform("Table_down.png", 70, 50, 360, 110, 0, 0, 30);//obstacle east table
+	Scene::CreatePlatform("Table_down.png", 40, 70, 300, 360, 0, 0, 0);//obstacle north east wall
+	Scene::CreatePlatform("Table_down.png", 40, 70, 360, 110, 0, 0, 30);//obstacle east table
 	Scene::CreatePlatform("Bookshelf_1.png", 70, 30, 310, -10, 0, 0, 30);//obstacle east bookshelf
 	Scene::CreatePlatform("Bookshelf_1.png", 70, 30, -360, 0, 0, 0, 0);//obstacle west bookshelf
 
