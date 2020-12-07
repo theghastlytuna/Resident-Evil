@@ -148,7 +148,7 @@ void ResidentEvil::Update()
 	player.GetBody()->SetLinearVelocity(b2Vec2(player.GetBody()->GetLinearVelocity().x * 0.888f, player.GetBody()->GetLinearVelocity().y * 0.888f));
 
 	//call zombie spawner
-	if (zombieSpawning)
+	if (zombieSpawning && activeZombies.size() <= 8)
 	{
 		spawnedZombie = Scene::ZombieSpawn(spawners);
 	}
@@ -169,6 +169,11 @@ void ResidentEvil::Update()
 		{
 			if (ECS::GetComponent<Health>(activeZombies[i]).health <= 1)
 			{
+				if (ECS::GetComponent<DropAmmo>(activeZombies[i]).hasAmmo == true)
+				{
+					ammoPickupStorage.push_back(Scene::CreateAmmoPickup(
+						ECS::GetComponent<PhysicsBody>(activeZombies[i]).GetPosition().x, ECS::GetComponent<PhysicsBody>(activeZombies[i]).GetPosition().y));
+				}
 				PhysicsBody::m_bodiesToDelete.push_back(activeZombies[i]);
 				activeZombies.erase(activeZombies.begin() + i);
 			}
@@ -291,7 +296,7 @@ void ResidentEvil::KeyboardHold()
 	{
 		if (Input::GetKey(Key::Space))
 		{
-			player.SetRotationAngleDeg(player.GetRotationAngleDeg() + 1.f);
+			player.SetRotationAngleDeg(player.GetRotationAngleDeg() + 1.5f);
 			return;
 		}
 		player.GetBody()->ApplyForceToCenter(b2Vec2(-300000.f, 0.f), true);
@@ -315,7 +320,7 @@ void ResidentEvil::KeyboardHold()
 	{
 		if (Input::GetKey(Key::Space))
 		{
-			player.SetRotationAngleDeg(player.GetRotationAngleDeg() - 1.f);
+			player.SetRotationAngleDeg(player.GetRotationAngleDeg() - 1.5f);
 			return;
 		}
 		player.GetBody()->ApplyForceToCenter(b2Vec2(300000.f, 0.f), true);

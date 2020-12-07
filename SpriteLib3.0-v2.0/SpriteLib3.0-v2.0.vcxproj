@@ -148,6 +148,7 @@
     <ClInclude Include="CanJump.h" />
     <ClInclude Include="CreationTrigger.h" />
     <ClInclude Include="DestroyTrigger.h" />
+    <ClInclude Include="DropAmmo.h" />
     <ClInclude Include="ECS.h" />
     <ClInclude Include="EffectManager.h" />
     <ClInclude Include="FirstCreation.h" />

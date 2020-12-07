@@ -20,6 +20,7 @@
 #include "CanJump.h"
 #include "BulletCollide.h"
 #include "Ammo.h"
+#include "DropAmmo.h"
 
 class ECS abstract
 {

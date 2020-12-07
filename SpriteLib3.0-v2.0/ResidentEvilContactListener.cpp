@@ -18,8 +18,6 @@ void ResidentEvilContactListener::BeginContact(b2Contact* contact)
 	bool sensorA = fixtureA->IsSensor();
 	bool sensorB = fixtureB->IsSensor();
 
-	int* moveBullet;
-
 	//if neither or both are sensors, will be false
 	if ((sensorA ^ sensorB))
 	{
