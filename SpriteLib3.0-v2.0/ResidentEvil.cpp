@@ -233,7 +233,7 @@ void ResidentEvil::Update()
 
 	//call zombie spawner
 	{
-		if (zombieSpawning && activeZombies.size() <= 8 && Timer::time > spawnTimer)
+		if (zombieSpawning && activeZombies.size() < 20 && Timer::time > spawnTimer)
 		{
 			activeZombies.push_back(Scene::ZombieSpawn(spawners));
 			srand(time(NULL));
@@ -379,7 +379,7 @@ void ResidentEvil::Follow()
 		vec2 normal = vec2(total.x / length, total.y / length);
 
 		//enemy.GetBody()->ApplyForceToCenter(b2Vec2(normal.x * 3000.f, normal.y * 3000.f ),true);
-		enemy.GetBody()->SetLinearVelocity(b2Vec2(normal.x * 15.f, normal.y * 15.f));
+		enemy.GetBody()->SetLinearVelocity(b2Vec2(normal.x * 30.f, normal.y * 30.f));
 
 		b2Vec2 baseVector = b2Vec2(1, 0);//0 degrees
 
